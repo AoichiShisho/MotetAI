@@ -38,8 +38,10 @@ public class PromptEditor : MonoBehaviour
         changePromptButton.onClick.AddListener(ChangePrompt);
         editButton.onClick.AddListener(EditPrompt);
         confirmChangeButtom.onClick.AddListener(ConfirmEdit);
-        confirmPromptButton.onClick.AddListener(ConfirmPrompt); // ConfirmPromptButtonのリスナーを追加
+        confirmPromptButton.onClick.AddListener(ConfirmPrompt);
 
+        inputField.interactable = true;
+        inputField.textComponent.enableWordWrapping = true;
         inputField.gameObject.SetActive(false);
         actionParent.SetActive(false);
     }

@@ -7,18 +7,21 @@ using System.Text.RegularExpressions;
 
 public class ChatGPTInteraction : MonoBehaviour {
     [SerializeField] private string openAIApiKey;
-    [SerializeField] private string modelVersion = "gpt-3.5-turbo";
-    [SerializeField] private int maxTokens = 150;
-    [SerializeField] private float temperature = 0.5f;
+    [SerializeField] private string modelVersion = "gpt-4o";
+    [SerializeField] private int maxTokens = 350;
+    [SerializeField] private float temperature = 1f;
     [TextArea]
-    [SerializeField] private string initialSystemMessage = "これから恋愛のシナリオと、ユーザーの行動を渡します。これらのシナリオを考えた時、ユーザーが取る行動からみて恋愛のシナリオは成功するか考えてください。また、返答としてはそのシナリオの続きを考え、最後にそのユーザーが恋愛が成功したか失敗したかを返してください。";
+    [SerializeField] private string initialSystemMessage = "これから、あるゲームのシナリオとプレイヤーの行動を渡します。これらのシナリオからプレイヤーの行動を考慮して、その後の物語がどのように展開し、プレイヤーが勝利するか敗北するかを決めてください。また、勝利の場合は最後に「モテる！」と記述してください。以下の詳細に従って出力してください。\n\n## ゲーム内容\n- 引き渡したシナリオは、異性の身の安全が危ぶまれる状況です。\n- ゲームの内容は、引き渡したシナリオにおけるプレイヤーの行動で、その後異性と付き合うことができるかを決め、付き合えたら勝利、付き合えなかったら敗北とする、というものです。\n\n## 指示\n- 渡されたシナリオとプレイヤーの行動から、そのシナリオからどのような行動結果になるか考えてください。\n- そのプレイヤーが最終的に好きな人からどのようなリアクションや返答などが得られるかについて考えてください。\n- 考えるシナリオは少し突飛なものであっても構わないものとする。\n- プレイヤーから行動を取得した時、基本的にはフラれること前提で出力してしまって構いません。本当にモテるやつ、もしくはユーモアの塊みたいなケースにのみモテる、という結果の出力になるような確率にしてください。\n\n## 出力フォーマット\n- アドバイスなどはせず、その行動からどのような物語になるかのみ、出力してください。\n- 勝利の場合、文章の最後に「モテる！」と出力してください。";
 
     private ChatGPTConnection chatGPTConnection;
     private const string FaceTagPattern = @"\[face:([^\]_]+)_?(\d*)\]";
     private const string InterestTagPattern = @"\[interest:(\d)\]";
 
+    [SerializeField] private AnswerUIController answerUIController;
+
     void Start() {
         chatGPTConnection = new ChatGPTConnection(openAIApiKey, initialSystemMessage, modelVersion, maxTokens, temperature);
+        answerUIController = GetComponent<AnswerUIController>();
     }
 
     public async void SendQuestion(string prompt, System.Action<string> callback) {
@@ -41,6 +44,9 @@ public class ChatGPTInteraction : MonoBehaviour {
         // 返答からタグ類を削除して純粋な返答のみにする
         string cleanedResponse = ExtractAndLogFaceTags(responseContent, interestLevel);
         callback(cleanedResponse);
+
+        // ChatGPTの返答を表示
+        answerUIController.DisplayAnswer(cleanedResponse);
     }
 
     private string ExtractAndLogFaceTags(string input, int interestLevel) {
