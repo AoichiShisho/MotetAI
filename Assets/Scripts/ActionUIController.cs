@@ -3,24 +3,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ActionHandler : MonoBehaviour
+public class ActionUIController : MonoBehaviour
 {
     [Header("UI Elements")]
     public TextMeshProUGUI promptText;
     public TMP_InputField actionInputField;
-    public TextMeshProUGUI resultText;
     public Button submitActionButton;
 
     private PromptEditor promptEditor;
-    private ChatGPTClient chatGPTClient;
+    private ChatGPTInteraction chatGPTInteraction;
 
     void Start()
     {
-        promptEditor = FindObjectOfType<PromptEditor>();
-        chatGPTClient = FindObjectOfType<ChatGPTClient>();
+        promptEditor = GetComponent<PromptEditor>();
+        chatGPTInteraction = GetComponent<ChatGPTInteraction>();
 
         submitActionButton.onClick.AddListener(SubmitAction);
-        // resultText.gameObject.SetActive(false);
     }
 
     public void SetPrompt(string prompt)
@@ -32,14 +30,13 @@ public class ActionHandler : MonoBehaviour
     {
         string scenario = promptEditor.GetCurrentPrompt();
         string action = actionInputField.text;
-        // string prompt = $"{scenario}\nプレイヤーの行動: {action}\n結果:";
+        string prompt = $"{scenario}\nプレイヤーの行動: {action}\n結果:";
 
-        // StartCoroutine(chatGPTClient.SendRequest(prompt, DisplayResult));
+        chatGPTInteraction.SendQuestion(prompt, DisplayResult);
     }
 
     void DisplayResult(string result)
     {
-        resultText.text = result;
-        resultText.gameObject.SetActive(true);
+        Debug.Log(result);
     }
 }

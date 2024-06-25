@@ -24,16 +24,16 @@ public class PromptEditor : MonoBehaviour
     private int currentPromptIndex = 0;
     private bool isEditing = false;
 
-    private ActionHandler actionHandler;
+    private ActionUIController actionUIController;
 
     void Start()
     {
         if (prompts.Length > 0)
             promptText.text = prompts[currentPromptIndex];
 
-        actionHandler = GetComponent<ActionHandler>();
-        if (actionHandler == null)
-            Debug.LogError("ActionHandlerが見つかりません。");
+        actionUIController = GetComponent<ActionUIController>();
+        if (actionUIController == null)
+            Debug.LogError("ActionUIController is missing!");
 
         changePromptButton.onClick.AddListener(ChangePrompt);
         editButton.onClick.AddListener(EditPrompt);
@@ -82,7 +82,7 @@ public class PromptEditor : MonoBehaviour
 
     void ConfirmPrompt()
     {
-        actionHandler.SetPrompt(promptText.text);
+        actionUIController.SetPrompt(promptText.text);
 
         promptParent.SetActive(false);
         actionParent.SetActive(true);
