@@ -59,11 +59,13 @@ public class PromptEditor : MonoBehaviour
     {
         if (!isEditing)
         {
+            promptText.gameObject.SetActive(false);
             inputField.text = promptText.text;
             inputField.gameObject.SetActive(true);
             confirmChangeButtom.gameObject.SetActive(true);
             changePromptButton.gameObject.SetActive(false);
             editButton.gameObject.SetActive(false);
+            confirmPromptButton.gameObject.SetActive(false);
             isEditing = true;
         }
     }
@@ -78,6 +80,8 @@ public class PromptEditor : MonoBehaviour
             confirmChangeButtom.gameObject.SetActive(false);
             changePromptButton.gameObject.SetActive(true);
             editButton.gameObject.SetActive(true);
+            promptText.gameObject.SetActive(true);
+            confirmPromptButton.gameObject.SetActive(true);
             isEditing = false;
         }
     }
