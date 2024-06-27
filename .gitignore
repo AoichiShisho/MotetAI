@@ -75,3 +75,4 @@ crashlytics-build.properties
 
 # Ignore the large font asset file
 /Assets/Font/*
+chatgpt_config.json
