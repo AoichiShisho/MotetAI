@@ -3,7 +3,7 @@ using UnityEngine;
 
 class ConfigLoader : MonoBehaviour
 {
-    public ChatGPTConfig config;
+    public Config config;
     public bool isConfigLoaded { get; private set; } = false;
 
     void Start()
@@ -23,7 +23,7 @@ class ConfigLoader : MonoBehaviour
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                config = JsonUtility.FromJson<ChatGPTConfig>(json);
+                config = JsonUtility.FromJson<Config>(json);
                 isConfigLoaded = true;
                 Debug.Log("Config file loaded successfully.");
                 Debug.Log("Loaded Config: " + JsonUtility.ToJson(config)); // 読み込んだ設定内容をデバッグ表示

@@ -1,5 +1,5 @@
 [System.Serializable]
-public class ChatGPTConfig
+public class Config
 {
     public string MODEL;
     public string API_URL;

@@ -7,10 +7,10 @@ using UnityEngine.Networking;
 
 namespace CHATGPT.OpenAI {
     public class ChatGPTConnection {
-        private readonly ChatGPTConfig config;
+        private readonly Config config;
         private readonly List<ChatGPTMessageModel> _messageList = new();// ユーザーとシステムのメッセージリスト
 
-        public ChatGPTConnection(ChatGPTConfig config, string initialMessage) {
+        public ChatGPTConnection(Config config, string initialMessage) {
             this.config = config;
             _messageList.Add(new ChatGPTMessageModel() { role = "system", content = initialMessage });
         }
