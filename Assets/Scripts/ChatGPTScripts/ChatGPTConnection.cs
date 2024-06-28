@@ -10,8 +10,9 @@ namespace CHATGPT.OpenAI {
         private readonly Config config;
         private readonly List<ChatGPTMessageModel> _messageList = new();// ユーザーとシステムのメッセージリスト
 
-        public ChatGPTConnection(Config config, string initialMessage) {
-            this.config = config;
+        public ChatGPTConnection() {
+            this.config = ConfigLoader.Load();
+            var initialMessage = TextLoader.Load();
             _messageList.Add(new ChatGPTMessageModel() { role = "system", content = initialMessage });
         }
 
