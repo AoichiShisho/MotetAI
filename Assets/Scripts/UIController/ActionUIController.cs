@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ActionUIController : MonoBehaviour
+public class ActionUIController : FadeController
 {
     [Header("UI Elements")]
     public TextMeshProUGUI promptText;
@@ -36,7 +36,7 @@ public class ActionUIController : MonoBehaviour
         promptText.text = prompt;
     }
 
-    void SubmitAction()
+    async void SubmitAction()
     {
         string scenario = promptUIController.GetCurrentPrompt();
         string action = actionInputField.text;
@@ -46,8 +46,12 @@ public class ActionUIController : MonoBehaviour
 
         revealUIController.SetActionText(action);
 
+        await FadeOut(actionParent);
+
         actionParent.SetActive(false);
         revealParent.SetActive(true);
+
+        await FadeIn(revealParent);
     }
 
     void DisplayResult(string result)

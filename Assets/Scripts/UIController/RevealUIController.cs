@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class RevealUIController : MonoBehaviour
+public class RevealUIController : FadeController
 {
     [Header("UI Elements")]
     public TextMeshProUGUI actionText;
@@ -24,9 +24,13 @@ public class RevealUIController : MonoBehaviour
         actionText.text = action;
     }
 
-    void ProceedToAnswer()
+    async void ProceedToAnswer()
     {
+        await FadeOut(revealParent);
+
         revealParent.SetActive(false);
         answerParent.SetActive(true);
+
+        await FadeIn(answerParent);
     }
 }
