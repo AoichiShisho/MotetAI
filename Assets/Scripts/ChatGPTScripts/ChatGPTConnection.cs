@@ -8,17 +8,17 @@ using UnityEngine.Networking;
 namespace CHATGPT.OpenAI {
     public class ChatGPTConnection {
         private readonly Config config;
-        private readonly List<ChatGPTMessageModel> _messageList = new();// ユーザーとシステムのメッセージリスト
+        private readonly List<Message> _messageList = new();// ユーザーとシステムのメッセージリスト
 
         public ChatGPTConnection() {
             this.config = ConfigLoader.Load();
             var initialMessage = TextLoader.Load();
-            _messageList.Add(new ChatGPTMessageModel() { role = "system", content = initialMessage });
+            _messageList.Add(Message.FromUser(initialMessage));
         }
 
         // メッセージを送信して応答を受け取る非同期メソッド
         public async UniTask<ChatGPTResponseModel> RequestAsync(string userMessage) {
-            _messageList.Add(new ChatGPTMessageModel { role = "user", content = userMessage });
+            _messageList.Add(Message.FromUser(userMessage));
             var headers = new Dictionary<string, string> {
                 {"Authorization", "Bearer " + config.API_KEY},
                 {"Content-type", "application/json"},
@@ -54,18 +54,12 @@ namespace CHATGPT.OpenAI {
             }
         }
     }
-    // メッセージの役割と内容を定義
-    [Serializable]
-    public class ChatGPTMessageModel {
-        public string role;
-        public string content;
-    }
 
     // APIリクエストの内容を定義
     [Serializable]
     public class ChatGPTCompletionRequestModel {
         public string model;
-        public List<ChatGPTMessageModel> messages;
+        public List<Message> messages;
         public int max_tokens;
         public float temperature;
     }
@@ -82,7 +76,7 @@ namespace CHATGPT.OpenAI {
         [System.Serializable]
         public class Choice {
             public int index;
-            public ChatGPTMessageModel message;
+            public Message message;
             public string finish_reason;
         }
 
