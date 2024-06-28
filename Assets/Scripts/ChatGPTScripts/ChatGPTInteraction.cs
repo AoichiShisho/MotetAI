@@ -13,13 +13,6 @@ public class ChatGPTInteraction : MonoBehaviour {
     [SerializeField] private AnswerUIController answerUIController;
 
     void Start() {
-        // 非同期初期化
-        InitializeAsync().Forget();
-    }
-
-    private async UniTaskVoid InitializeAsync()
-    {
-        // ChatGPTConnectionの初期化
         chatGPTConnection = new ChatGPTConnection();
         answerUIController = GetComponent<AnswerUIController>();
     }
