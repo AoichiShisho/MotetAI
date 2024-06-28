@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CHATGPT.OpenAI;
 using System.Text.RegularExpressions;
+using Cysharp.Threading.Tasks;
 
 public class ChatGPTInteraction : MonoBehaviour {
     [SerializeField] private ConfigLoader configLoader;
@@ -16,6 +17,19 @@ public class ChatGPTInteraction : MonoBehaviour {
     [SerializeField] private AnswerUIController answerUIController;
 
     void Start() {
+        // 非同期初期化
+        InitializeAsync().Forget();
+    }
+
+    private async UniTaskVoid InitializeAsync()
+    {
+        // ConfigLoaderが設定を読み込むまで待つ
+        await UniTask.WaitUntil(() => configLoader != null && configLoader.config != null);
+
+        // Configの内容を確認する
+        Debug.Log("Config Loaded in ChatGPTInteraction: " + JsonUtility.ToJson(configLoader.config));
+
+        // ChatGPTConnectionの初期化
         chatGPTConnection = new ChatGPTConnection(configLoader.config, initialSystemMessage);
         answerUIController = GetComponent<AnswerUIController>();
     }

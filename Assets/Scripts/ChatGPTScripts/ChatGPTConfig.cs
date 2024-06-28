@@ -1,5 +1,5 @@
 [System.Serializable]
-public class ChatGptConfig
+public class ChatGPTConfig
 {
     public string MODEL;
     public string API_URL;
