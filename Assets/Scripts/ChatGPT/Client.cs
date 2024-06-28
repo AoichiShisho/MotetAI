@@ -5,13 +5,13 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace CHATGPT.OpenAI {
-    public class ChatGPTConnection {
+namespace ChatGPT {
+    public class Client {
         private readonly Config config;
         private readonly List<Message> _messageList = new();
 
-        public ChatGPTConnection() {
-            this.config = ConfigLoader.Load();
+        public Client() {
+            config = ConfigLoader.Load();
             var initialMessage = TextLoader.Load();
             _messageList.Add(Message.FromUser(initialMessage));
         }

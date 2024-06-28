@@ -1,24 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CHATGPT.OpenAI;
 using System.Text.RegularExpressions;
-using Cysharp.Threading.Tasks;
+using ChatGPT;
 
 public class ChatGPTInteraction : MonoBehaviour {
-    private ChatGPTConnection chatGPTConnection;
+    private Client Client;
     private const string FaceTagPattern = @"\[face:([^\]_]+)_?(\d*)\]";
     private const string InterestTagPattern = @"\[interest:(\d)\]";
 
     [SerializeField] private AnswerUIController answerUIController;
 
     void Start() {
-        chatGPTConnection = new ChatGPTConnection();
+        Client = new Client();
         answerUIController = GetComponent<AnswerUIController>();
     }
 
     public async void SendQuestion(string prompt, System.Action<string> callback) {
-        var response = await chatGPTConnection.RequestAsync(prompt);
+        var response = await Client.RequestAsync(prompt);
         string responseContent = response.choices[0].message.content;
 
         // 関心タグを抽出

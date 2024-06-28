@@ -1,4 +1,6 @@
-[System.Serializable]
+namespace ChatGPT
+{
+    [System.Serializable]
     public class Response {
         public string id;
         public string @object;
@@ -20,3 +22,6 @@
             public int total_tokens;
         }
     }
+
+}
+    

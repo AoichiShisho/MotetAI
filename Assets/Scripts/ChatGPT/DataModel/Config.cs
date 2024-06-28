@@ -1,5 +1,5 @@
 [System.Serializable]
-public class Config
+class Config
 {
     public string MODEL;
     public string API_URL;

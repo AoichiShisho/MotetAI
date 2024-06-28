@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ChatGPT;
 using UnityEngine;
 
 /// <summary>
@@ -6,7 +7,7 @@ using UnityEngine;
 /// </summary>
 
 [System.Serializable]
-public class Options {
+class Options {
     public string model;
     public List<Message> messages;
     public int max_tokens;
