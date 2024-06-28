@@ -13,6 +13,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();    
     }
 
+    public void SetPlayerName(string playerName)
+    {
+        PhotonNetwork.NickName = playerName;
+    }
+
     public void OnCreateLobbyButtonClicked()
     {
         string roomName = GenerateUniqueRoomID();
