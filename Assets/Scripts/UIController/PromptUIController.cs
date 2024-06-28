@@ -1,18 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class PromptUIController : MonoBehaviour
+public class PromptUIController : MonoBehaviourPunCallbacks
 {
     [Header("UI Elements")]
     public TextMeshProUGUI promptText;
     public TMP_InputField inputField;
     public TextMeshProUGUI textAmount;
+    public TextMeshProUGUI waitingText;
 
     [Header("Buttons")]
     public Button changePromptButton;
     public Button editButton;
-    public Button confirmChangeButtom;
+    public Button confirmChangeButton;
     public Button confirmPromptButton;
 
     [Header("Prompts")]
@@ -21,14 +24,17 @@ public class PromptUIController : MonoBehaviour
     [Header("Parent Objects")]
     public GameObject promptParent;
     public GameObject actionParent;
+    public GameObject waitingParent;
 
     private int currentPromptIndex = 0;
     private bool isEditing = false;
 
     private ActionUIController actionUIController;
+    private PhotonView photonView;
 
     void Start()
     {
+        Debug.Log("PromptUIController Start called");
         if (prompts.Length > 0)
             promptText.text = prompts[currentPromptIndex];
 
@@ -36,9 +42,11 @@ public class PromptUIController : MonoBehaviour
         if (actionUIController == null)
             Debug.LogError("ActionUIController is missing!");
 
+        photonView = GetComponent<PhotonView>();
+
         changePromptButton.onClick.AddListener(ChangePrompt);
         editButton.onClick.AddListener(EditPrompt);
-        confirmChangeButtom.onClick.AddListener(ConfirmEdit);
+        confirmChangeButton.onClick.AddListener(ConfirmEdit);
         confirmPromptButton.onClick.AddListener(ConfirmPrompt);
 
         inputField.interactable = true;
@@ -46,8 +54,29 @@ public class PromptUIController : MonoBehaviour
         inputField.onValueChanged.AddListener(UpdateTextAmount);
         inputField.gameObject.SetActive(false);
         actionParent.SetActive(false);
+        waitingParent.SetActive(false);
 
         UpdateTextAmount(inputField.text);
+    }
+
+    [PunRPC]
+    public void InitializeUI()
+    {
+        Debug.Log($"InitializeUI called. IsMasterClient: {PhotonNetwork.IsMasterClient}");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            promptParent.SetActive(true);
+            waitingParent.SetActive(false);
+            this.enabled = true;
+            Debug.Log("MasterClient UI set to PromptParent");
+        }
+        else
+        {
+            promptParent.SetActive(false);
+            waitingParent.SetActive(true);
+            this.enabled = false;
+            Debug.Log("Non-MasterClient UI set to WaitingParent");
+        }
     }
 
     void ChangePrompt()
@@ -66,7 +95,7 @@ public class PromptUIController : MonoBehaviour
             promptText.gameObject.SetActive(false);
             inputField.text = promptText.text;
             inputField.gameObject.SetActive(true);
-            confirmChangeButtom.gameObject.SetActive(true);
+            confirmChangeButton.gameObject.SetActive(true);
             changePromptButton.gameObject.SetActive(false);
             editButton.gameObject.SetActive(false);
             confirmPromptButton.gameObject.SetActive(false);
@@ -81,7 +110,7 @@ public class PromptUIController : MonoBehaviour
             promptText.text = inputField.text;
             prompts[currentPromptIndex] = inputField.text;
             inputField.gameObject.SetActive(false);
-            confirmChangeButtom.gameObject.SetActive(false);
+            confirmChangeButton.gameObject.SetActive(false);
             changePromptButton.gameObject.SetActive(true);
             editButton.gameObject.SetActive(true);
             promptText.gameObject.SetActive(true);
@@ -92,10 +121,22 @@ public class PromptUIController : MonoBehaviour
 
     void ConfirmPrompt()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("NotifyOtherPlayers", RpcTarget.Others, PhotonNetwork.NickName);
+        }
         actionUIController.SetPrompt(promptText.text);
 
         promptParent.SetActive(false);
         actionParent.SetActive(true);
+    }
+
+    [PunRPC]
+    void NotifyOtherPlayers(string playerName)
+    {
+        Debug.Log($"NotifyOtherPlayers called with playerName: {playerName}");
+        waitingText.text = $"{playerName}がシナリオを考え中...";
+        waitingParent.SetActive(true);
     }
 
     public string GetCurrentPrompt()
