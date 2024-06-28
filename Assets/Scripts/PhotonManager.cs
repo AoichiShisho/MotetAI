@@ -6,7 +6,7 @@ using TMPro;
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     public TMP_InputField inputField;
-    public string lobbySceneName = "Lobby";
+    [SerializeField] private string lobbySceneName = "Lobby";
 
     void Awake()
     {

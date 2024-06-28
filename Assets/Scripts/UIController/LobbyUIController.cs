@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -8,11 +10,13 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
     public GameObject playerListParent;
     public GameObject playerListItemPrefab;
     public TMP_Text lobbyIDText;
+    public Button startGameButton;
 
     void Start()
     {
         UpdatePlayerList();
         UpdateLobbyID();
+        startGameButton.onClick.AddListener(OnStartGameButtonClicked);
     }
 
     void UpdateLobbyID()
@@ -49,5 +53,23 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UpdatePlayerList();
+    }
+
+    void OnStartGameButtonClicked()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("StartGame", RpcTarget.All);
+        }
+        else
+        {
+            Debug.Log("ゲームマスターじゃないと始められません");
+        }
+    }
+
+    [PunRPC]
+    void StartGame()
+    {
+        PhotonNetwork.LoadLevel("Main");
     }
 }
