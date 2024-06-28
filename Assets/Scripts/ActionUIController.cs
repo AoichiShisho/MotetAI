@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 public class ActionUIController : MonoBehaviour
 {
@@ -36,7 +38,7 @@ public class ActionUIController : MonoBehaviour
         promptText.text = prompt;
     }
 
-    void SubmitAction()
+    async void SubmitAction()
     {
         string scenario = promptEditor.GetCurrentPrompt();
         string action = actionInputField.text;
@@ -46,8 +48,12 @@ public class ActionUIController : MonoBehaviour
 
         revealUIController.SetActionText(action);
 
+        await FadeOut(actionParent);
+
         actionParent.SetActive(false);
         revealParent.SetActive(true);
+
+        await FadeIn(revealParent);
     }
 
     void DisplayResult(string result)
@@ -66,5 +72,31 @@ public class ActionUIController : MonoBehaviour
             textAmount.color = new Color32(255, 87, 87, 255); // FF5757
         else
             textAmount.color = new Color32(87, 87, 87, 255); // 575757
+    }
+
+    private async UniTask FadeOut(GameObject fadeOutObject)
+    {
+        CanvasGroup fadeOutCanvasGroup = fadeOutObject.GetComponent<CanvasGroup>();
+        if (fadeOutCanvasGroup == null)
+        {
+            fadeOutCanvasGroup = fadeOutObject.AddComponent<CanvasGroup>();
+        }
+
+        // フェードアウトのアニメーション
+        await fadeOutCanvasGroup.DOFade(0f, 1f).SetEase(Ease.InOutQuad).ToUniTask();
+    }
+
+    private async UniTask FadeIn(GameObject fadeInObject)
+    {
+        CanvasGroup fadeInCanvasGroup = fadeInObject.GetComponent<CanvasGroup>();
+        if (fadeInCanvasGroup == null)
+        {
+            fadeInCanvasGroup = fadeInObject.AddComponent<CanvasGroup>();
+        }
+
+        fadeInCanvasGroup.alpha = 0f;
+
+        // フェードインのアニメーション
+        await fadeInCanvasGroup.DOFade(1f, 1f).SetEase(Ease.InOutQuad).ToUniTask();
     }
 }
