@@ -17,7 +17,7 @@ namespace CHATGPT.OpenAI {
         }
 
         // メッセージを送信して応答を受け取る非同期メソッド
-        public async UniTask<ChatGPTResponseModel> RequestAsync(string userMessage) {
+        public async UniTask<Response> RequestAsync(string userMessage) {
             _messageList.Add(Message.FromUser(userMessage));
             var headers = new Dictionary<string, string> {
                 {"Authorization", "Bearer " + config.API_KEY},
@@ -48,7 +48,7 @@ namespace CHATGPT.OpenAI {
                 throw new Exception(request.error);
             } else {
                 var responseString = request.downloadHandler.text;
-                var responseObject = JsonUtility.FromJson<ChatGPTResponseModel>(responseString);
+                var responseObject = JsonUtility.FromJson<Response>(responseString);
                 _messageList.Add(responseObject.choices[0].message);
                 return responseObject;
             }
@@ -62,29 +62,5 @@ namespace CHATGPT.OpenAI {
         public List<Message> messages;
         public int max_tokens;
         public float temperature;
-    }
-
-    // API応答の内容を定義
-    [System.Serializable]
-    public class ChatGPTResponseModel {
-        public string id;
-        public string @object;
-        public int created;
-        public Choice[] choices;
-        public Usage usage;
-
-        [System.Serializable]
-        public class Choice {
-            public int index;
-            public Message message;
-            public string finish_reason;
-        }
-
-        [System.Serializable]
-        public class Usage {
-            public int prompt_tokens;
-            public int completion_tokens;
-            public int total_tokens;
-        }
     }
 }
