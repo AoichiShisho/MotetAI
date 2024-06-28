@@ -121,22 +121,17 @@ public class PromptUIController : MonoBehaviourPunCallbacks
 
     void ConfirmPrompt()
     {
+        string prompt = promptText.text;
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("NotifyOtherPlayers", RpcTarget.Others, PhotonNetwork.NickName);
+            // プロンプトテキストを他のクライアントに共有
+            MainGameManager mainGameManager = FindObjectOfType<MainGameManager>();
+            mainGameManager.photonView.RPC("NotifyOtherPlayers", RpcTarget.All, PhotonNetwork.NickName, prompt);
         }
-        actionUIController.SetPrompt(promptText.text);
+        actionUIController.SetPrompt(prompt);
 
         promptParent.SetActive(false);
         actionParent.SetActive(true);
-    }
-
-    [PunRPC]
-    void NotifyOtherPlayers(string playerName)
-    {
-        Debug.Log($"NotifyOtherPlayers called with playerName: {playerName}");
-        waitingText.text = $"{playerName}がシナリオを考え中...";
-        waitingParent.SetActive(true);
     }
 
     public string GetCurrentPrompt()
