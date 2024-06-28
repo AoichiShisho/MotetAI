@@ -2,21 +2,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
 using ChatGPT;
+using System;
+using Unity.Loading;
 
-public class ChatGPTInteraction : MonoBehaviour {
+public class ChatGPTInteraction : MonoBehaviour
+{
     private Client Client;
     private const string FaceTagPattern = @"\[face:([^\]_]+)_?(\d*)\]";
     private const string InterestTagPattern = @"\[interest:(\d)\]";
+    private readonly ILoadStatus loadStatus = new LoadStatusImpl();
 
     [SerializeField] private AnswerUIController answerUIController;
 
     void Start() {
         Client = new Client();
         answerUIController = GetComponent<AnswerUIController>();
+
+        loadStatus.RegisterAction(LoadingStatus.InProgress, () => {
+            Debug.Log("通信を開始します。");
+        });
+
+        loadStatus.RegisterAction(LoadingStatus.Completed, () => {
+            Debug.Log("通信が完了しました。");
+        });
     }
 
     public async void SendQuestion(string prompt, System.Action<string> callback) {
+        loadStatus.ExecuteAction(LoadingStatus.InProgress);
         var response = await Client.RequestAsync(prompt);
+
+        loadStatus.ExecuteAction(LoadingStatus.Completed);
         string responseContent = response.choices[0].message.content;
 
         // 関心タグを抽出
@@ -62,5 +77,15 @@ public class ChatGPTInteraction : MonoBehaviour {
 
         Debug.Log("ChatGPTの返答（表情タグ除去）: " + cleanedInput);
         return cleanedInput;
+    }
+
+    public void RegisterAction(LoadingStatus status, Action action)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ExecuteAction(LoadingStatus status)
+    {
+        throw new NotImplementedException();
     }
 }
