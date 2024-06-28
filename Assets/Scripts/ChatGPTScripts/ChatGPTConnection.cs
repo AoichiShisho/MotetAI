@@ -24,16 +24,13 @@ namespace CHATGPT.OpenAI {
                 {"Content-type", "application/json"},
                 {"X-Slack-No-Retry", "1"}
             };
-            var options = new ChatGPTCompletionRequestModel() {
+            Options options = new() {
                 model = config.MODEL,
                 messages = _messageList,
                 max_tokens = config.MAX_TOKENS,
                 temperature = config.TEMPERATURE
             };
-            var jsonOptions = JsonUtility.ToJson(options);
-            Debug.Log("自分:" + userMessage);
-            Debug.Log("API URL: " + config.API_URL); // ここでAPI URLをデバッグ表示
-            Debug.Log("Request Payload: " + jsonOptions); // リクエストペイロードをデバッグ表示
+            var jsonOptions = options.ToJson();
 
             using var request = new UnityWebRequest(config.API_URL, "POST") {
                 uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonOptions)),
@@ -53,14 +50,5 @@ namespace CHATGPT.OpenAI {
                 return responseObject;
             }
         }
-    }
-
-    // APIリクエストの内容を定義
-    [Serializable]
-    public class ChatGPTCompletionRequestModel {
-        public string model;
-        public List<Message> messages;
-        public int max_tokens;
-        public float temperature;
-    }
+    }    
 }
