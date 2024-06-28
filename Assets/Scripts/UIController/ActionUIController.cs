@@ -15,13 +15,13 @@ public class ActionUIController : MonoBehaviour
     public GameObject actionParent;
     public GameObject revealParent;
 
-    private PromptEditor promptEditor;
+    private PromptUIController promptUIController;
     private ChatGPTInteraction chatGPTInteraction;
     private RevealUIController revealUIController;
 
     void Start()
     {
-        promptEditor = GetComponent<PromptEditor>();
+        promptUIController = GetComponent<PromptUIController>();
         chatGPTInteraction = GetComponent<ChatGPTInteraction>();
         revealUIController = GetComponent<RevealUIController>();
 
@@ -38,7 +38,7 @@ public class ActionUIController : MonoBehaviour
 
     void SubmitAction()
     {
-        string scenario = promptEditor.GetCurrentPrompt();
+        string scenario = promptUIController.GetCurrentPrompt();
         string action = actionInputField.text;
         string prompt = $"{scenario}\nプレイヤーの行動: {action}\n結果:";
 

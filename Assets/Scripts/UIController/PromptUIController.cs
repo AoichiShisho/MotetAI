@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PromptEditor : MonoBehaviour
+public class PromptUIController : MonoBehaviour
 {
     [Header("UI Elements")]
     public TextMeshProUGUI promptText;
