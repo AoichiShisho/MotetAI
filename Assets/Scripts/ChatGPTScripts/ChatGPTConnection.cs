@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 namespace CHATGPT.OpenAI {
     public class ChatGPTConnection {
         private readonly Config config;
-        private readonly List<Message> _messageList = new();// ユーザーとシステムのメッセージリスト
+        private readonly List<Message> _messageList = new();
 
         public ChatGPTConnection() {
             this.config = ConfigLoader.Load();
@@ -40,8 +40,8 @@ namespace CHATGPT.OpenAI {
                 request.SetRequestHeader(header.Key, header.Value);
             }
             await request.SendWebRequest();
-            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError) {
-                Debug.LogError("UnityWebRequest Error: " + request.error); // エラー詳細をデバッグ表示
+            if (request.IsError()) {
+                Debug.LogError("UnityWebRequest Error: " + request.error);
                 throw new Exception(request.error);
             } else {
                 var responseString = request.downloadHandler.text;
