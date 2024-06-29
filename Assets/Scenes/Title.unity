@@ -341,8 +341,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 256229546}
-        m_TargetAssemblyTypeName: LobbyCanvasManager, Assembly-CSharp
-        m_MethodName: OnLobbyJoinButtonClicked
+        m_TargetAssemblyTypeName: LobbyViewModel, Assembly-CSharp
+        m_MethodName: NavigateInputIdUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -638,7 +638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 321524710}
   m_Layer: 5
-  m_Name: LobbyJoinParent
+  m_Name: InputNameUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1022,7 +1022,7 @@ GameObject:
   m_Component:
   - component: {fileID: 508136845}
   m_Layer: 5
-  m_Name: LobbySelectParent
+  m_Name: SelectUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1476,8 +1476,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 256229546}
-        m_TargetAssemblyTypeName: LobbyCanvasManager, Assembly-CSharp
-        m_MethodName: OnLobbyCreateButtonClicked
+        m_TargetAssemblyTypeName: LobbyViewModel, Assembly-CSharp
+        m_MethodName: NavigateInputNameUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3342,7 +3342,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 256229546}
         m_TargetAssemblyTypeName: LobbyViewModel, Assembly-CSharp
-        m_MethodName: OnConfirmCreateButtonClicked
+        m_MethodName: OnConfirmButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3362,7 +3362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1729221101}
   m_Layer: 5
-  m_Name: LobbyCreateParent
+  m_Name: InputIdUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3570,7 +3570,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 256229546}
         m_TargetAssemblyTypeName: LobbyViewModel, Assembly-CSharp
-        m_MethodName: OnConfirmJoinButtonClicked
+        m_MethodName: OnConfirmButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
