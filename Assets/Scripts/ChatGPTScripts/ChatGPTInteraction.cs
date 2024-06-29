@@ -78,14 +78,4 @@ public class ChatGPTInteraction : MonoBehaviour
         Debug.Log("ChatGPTの返答（表情タグ除去）: " + cleanedInput);
         return cleanedInput;
     }
-
-    public void RegisterAction(LoadingStatus status, Action action)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ExecuteAction(LoadingStatus status)
-    {
-        throw new NotImplementedException();
-    }
 }
