@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
-using Photon.Realtime;
 
 public class PromptUIController : MonoBehaviourPunCallbacks
 {
@@ -31,6 +30,7 @@ public class PromptUIController : MonoBehaviourPunCallbacks
 
     private ActionUIController actionUIController;
     private PhotonView photonView;
+    private MainGameManager mainGameManager;
 
     void Start()
     {
@@ -43,6 +43,7 @@ public class PromptUIController : MonoBehaviourPunCallbacks
             Debug.LogError("ActionUIController is missing!");
 
         photonView = GetComponent<PhotonView>();
+        mainGameManager = FindObjectOfType<MainGameManager>();
 
         changePromptButton.onClick.AddListener(ChangePrompt);
         editButton.onClick.AddListener(EditPrompt);
@@ -124,14 +125,11 @@ public class PromptUIController : MonoBehaviourPunCallbacks
         string prompt = promptText.text;
         if (PhotonNetwork.IsMasterClient)
         {
-            // プロンプトテキストを他のクライアントに共有
-            MainGameManager mainGameManager = FindObjectOfType<MainGameManager>();
-            mainGameManager.photonView.RPC("NotifyOtherPlayers", RpcTarget.All, PhotonNetwork.NickName, prompt);
+            mainGameManager.NotifyOtherPlayersRPC(PhotonNetwork.NickName, prompt);
         }
         actionUIController.SetPrompt(prompt);
 
         promptParent.SetActive(false);
-        waitingParent.SetActive(false);
         actionParent.SetActive(true);
     }
 
