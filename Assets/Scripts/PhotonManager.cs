@@ -1,42 +1,72 @@
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
+using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private string lobbySceneName = "Lobby";
+    [SerializeField] private GameObject errorImage;
+    [SerializeField] private TextMeshProUGUI errorText;
 
     void Awake()
     {
         PhotonNetwork.ConnectUsingSettings();    
     }
 
-    public void SetPlayerName(string playerName)
+    public async void SetPlayerName(string playerName)
     {
-        PhotonNetwork.NickName = playerName;
+        if (!string.IsNullOrEmpty(playerName))
+        {
+            PhotonNetwork.NickName = playerName;
+        }
+        else 
+        {
+            Debug.LogError("名前がない");
+            errorImage.SetActive(true);
+            errorText.text = "名前を入力してください。";
+
+            await UniTask.Delay(1000);
+            errorImage.SetActive(false);
+        }
     }
 
-    public void OnCreateLobbyButtonClicked()
+    public void OnCreateLobbyButtonClicked(string playerName)
     {
-        string roomName = GenerateUniqueRoomID();
-        PhotonNetwork.CreateRoom(roomName, new RoomOptions());
+        if (!string.IsNullOrEmpty(playerName))
+        {
+            string roomName = GenerateUniqueRoomID();
+            PhotonNetwork.CreateRoom(roomName, new RoomOptions());
+        }
     }
 
-    public void OnJoinButtonClicked(string roomId)
+    public async void OnJoinButtonClicked(string roomId)
     {
-        bool isExistName = string.IsNullOrEmpty(roomId);
+        bool isExistName = !string.IsNullOrEmpty(roomId);
         bool isExistRoom = PhotonNetwork.JoinRoom(roomId);
 
         if (isExistRoom) return;
 
-        if (!isExistRoom)
+        if (isExistName && !isExistRoom)
         {
             Debug.LogError($"RoomId: { roomId }は存在しません");
-        }
+            errorImage.SetActive(true);
+            errorText.text = "ルームIDが存在しません。";
+
+            await UniTask.Delay(1000);
+            errorImage.SetActive(false);
+        } 
         
         if (!isExistName)
         {
-            Debug.LogError("名前が入力されていません");
+            Debug.LogError("ルームIDが入力されていません");
+            errorImage.SetActive(true);
+            errorText.text = "ルームIDを入力してください。";
+
+            await UniTask.Delay(1000);
+            errorImage.SetActive(false);
         }
     }
 
@@ -47,12 +77,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
 
         PhotonNetwork.LoadLevel(lobbySceneName);
-    }
-
-    public override void OnJoinRoomFailed(short returnCode, string message)
-    {
-        Debug.LogError("Failed to join room: " + message);
-        // ここにUIを表示する処理を追加
     }
 
     public override void OnCreatedRoom()
