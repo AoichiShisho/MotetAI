@@ -24,11 +24,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public void OnJoinButtonClicked(string roomId)
     {
-        if (!string.IsNullOrEmpty(roomId)) {
-            PhotonNetwork.JoinRoom(roomId);
-        } else {
-            Debug.LogError("Room name is empty!");
-            // ここにUIを表示する処理を追加
+        bool isExistName = string.IsNullOrEmpty(roomId);
+        bool isExistRoom = PhotonNetwork.JoinRoom(roomId);
+
+        if (isExistRoom) return;
+
+        if (!isExistRoom)
+        {
+            Debug.LogError($"RoomId: { roomId }は存在しません");
+        }
+        
+        if (!isExistName)
+        {
+            Debug.LogError("名前が入力されていません");
         }
     }
 
