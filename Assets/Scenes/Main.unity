@@ -2937,7 +2937,7 @@ MonoBehaviour:
   submitActionButton: {fileID: 2086758977}
   textAmount: {fileID: 1155314140}
   actionParent: {fileID: 373521761}
-  revealParent: {fileID: 458570305}
+  actionWaitingParent: {fileID: 162050101}
 --- !u!114 &1193883813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3017,10 +3017,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   promptUIController: {fileID: 1193883810}
   actionUIController: {fileID: 1193883812}
+  revealUIController: {fileID: 1193883814}
   waitingText: {fileID: 589416894}
   waitingParent: {fileID: 1399052963}
   promptParent: {fileID: 1554029536}
   actionParent: {fileID: 373521761}
+  actionWaitingParent: {fileID: 162050101}
+  revealParent: {fileID: 458570305}
 --- !u!224 &1265111890 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8096761534368502603, guid: 92a1b401fadff4728af36517a8ba1176, type: 3}

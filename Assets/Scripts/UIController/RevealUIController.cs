@@ -2,12 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class RevealUIController : FadeController
+public class RevealUIController : MonoBehaviour
 {
     [Header("UI Elements")]
     public TextMeshProUGUI actionText;
-
-    [Header("Button")]
     public Button proceedButton;
 
     [Header("Parent Objects")]
@@ -16,7 +14,7 @@ public class RevealUIController : FadeController
 
     void Start()
     {
-        proceedButton.onClick.AddListener(ProceedToAnswer);
+        proceedButton.onClick.AddListener(OnProceedButtonClicked);
     }
 
     public void SetActionText(string action)
@@ -24,13 +22,9 @@ public class RevealUIController : FadeController
         actionText.text = action;
     }
 
-    async void ProceedToAnswer()
+    void OnProceedButtonClicked()
     {
-        await FadeOut(revealParent);
-
         revealParent.SetActive(false);
         answerParent.SetActive(true);
-
-        await FadeIn(answerParent);
     }
 }
