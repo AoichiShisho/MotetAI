@@ -35,14 +35,22 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
 
     public void NavigateInputNameUI()
     {
-        joinMode = JoinMode.CREATE;
         SetUIState(LobbyUIState.INPUT_NAME);
     }
 
     public void NavigateInputIdUI()
     {
-        joinMode = JoinMode.JOIN;
         SetUIState(LobbyUIState.INPUT_ID);
+    }
+
+    public void SetJoinMode()
+    {
+        joinMode = JoinMode.JOIN;
+    }
+
+    public void SetCreateMode()
+    {
+        joinMode = JoinMode.CREATE;
     }
 
     public void OnConfirmButtonClicked()
