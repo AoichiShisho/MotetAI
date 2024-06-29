@@ -13,6 +13,7 @@ public class ActionUIController : FadeController
 
     [Header("Parent Objects")]
     public GameObject actionParent;
+    public GameObject actionWaitingParent;
     public GameObject revealParent;
 
     private PromptUIController promptUIController;
@@ -48,7 +49,10 @@ public class ActionUIController : FadeController
 
         await FadeOut(actionParent);
 
+        await FadeOut(actionWaitingParent);
+
         actionParent.SetActive(false);
+        actionWaitingParent.SetActive(false);
         revealParent.SetActive(true);
 
         await FadeIn(revealParent);

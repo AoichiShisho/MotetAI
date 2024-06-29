@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657886, g: 0.49641275, b: 0.5748176, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2937,6 +2937,7 @@ MonoBehaviour:
   submitActionButton: {fileID: 2086758977}
   textAmount: {fileID: 1155314140}
   actionParent: {fileID: 373521761}
+  actionWaitingParent: {fileID: 162050101}
   revealParent: {fileID: 458570305}
 --- !u!114 &1193883813
 MonoBehaviour:
