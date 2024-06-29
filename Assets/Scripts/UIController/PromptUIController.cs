@@ -34,7 +34,6 @@ public class PromptUIController : MonoBehaviourPunCallbacks
     private PhotonView photonView;
     private MainGameManager mainGameManager;
 
-    Player masterClient = PhotonNetwork.MasterClient;
     public string masterClientAccountName;
 
     void Start()
@@ -64,11 +63,11 @@ public class PromptUIController : MonoBehaviourPunCallbacks
 
         UpdateTextAmount(inputField.text);
         
-        if (masterClient != null)
+        if (PhotonNetwork.MasterClient != null)
         {
             // アカウント名を取得する
-            masterClientAccountName = GetAccountName(masterClient);
-        }   
+            masterClientAccountName = GetAccountName(PhotonNetwork.MasterClient);
+        }
     }
 
     private string GetAccountName(Player player)
