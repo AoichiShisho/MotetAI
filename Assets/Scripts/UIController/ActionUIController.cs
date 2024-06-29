@@ -39,15 +39,15 @@ public class ActionUIController : FadeController
         promptText.text = prompt;
     }
 
-    async void SubmitAction()
+    void SubmitAction()
     {
         string action = actionInputField.text;
-        mainGameManager.SubmitAction(action);
 
-        await FadeOut(actionParent);
         actionParent.SetActive(false);
         actionWaitingParent.SetActive(true);
-        await FadeIn(actionWaitingParent);
+        Debug.Log("ShowWaiting");
+
+        mainGameManager.SubmitAction(action);
     }
 
     void UpdateTextAmount(string text)
