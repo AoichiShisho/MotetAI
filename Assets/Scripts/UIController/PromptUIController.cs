@@ -131,6 +131,7 @@ public class PromptUIController : MonoBehaviourPunCallbacks
         actionUIController.SetPrompt(prompt);
 
         promptParent.SetActive(false);
+        waitingParent.SetActive(false);
         actionParent.SetActive(true);
     }
 
