@@ -2689,19 +2689,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93838795ec274884b9a93060c0fa9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyJoinButton: {fileID: 106488209}
-  lobbyCreateButton: {fileID: 913554498}
-  joinButton: {fileID: 2023756327}
-  joinBackButton: {fileID: 1187642897}
-  createBackButton: {fileID: 1197119154}
-  confirmNameButton: {fileID: 1707579944}
-  lobbySelectParent: {fileID: 508136844}
-  lobbyJoinParent: {fileID: 321524709}
-  lobbyCreateParent: {fileID: 1729221100}
-  inputField: {fileID: 1054763690}
-  textAmount: {fileID: 2089925768}
-  photonManager: {fileID: 0}
-  isCreatingLobby: 0
 --- !u!1 &1390797023
 GameObject:
   m_ObjectHideFlags: 0
@@ -3608,9 +3595,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341999761}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: LoadMainScene
+      - m_Target: {fileID: 256229546}
+        m_TargetAssemblyTypeName: LobbyViewModel, Assembly-CSharp
+        m_MethodName: OnLobbyJoinButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
