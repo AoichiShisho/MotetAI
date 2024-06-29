@@ -14,7 +14,7 @@ public abstract class CanvasManager<T> : MonoBehaviour where T : Enum {
     private Dictionary<T, GameObject> uiStates;
     private T currentState;
 
-    private void Start() {
+    protected virtual void Start() {
         InitializeDictionary();
 
         currentState = GetDefaultState();
@@ -24,13 +24,24 @@ public abstract class CanvasManager<T> : MonoBehaviour where T : Enum {
     }
 
     public void SetUIState(T newState) {
+        Debug.Log("Current:" + currentState);
+        Debug.Log("New:" + newState);
+
         if (uiStates.ContainsKey(currentState)) {
+            Debug.Log("Current state exists");
+
             uiStates[currentState].SetActive(false);
         }
         if (uiStates.ContainsKey(newState)) {
+            Debug.Log("Current state exists");
+
             uiStates[newState].SetActive(true);
         }
         currentState = newState;
+    }
+
+    public T GetCurrentState() {
+        return currentState;
     }
 
     private void InitializeDictionary() {
