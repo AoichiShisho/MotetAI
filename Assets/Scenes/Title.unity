@@ -403,6 +403,7 @@ GameObject:
   - component: {fileID: 256229543}
   - component: {fileID: 256229542}
   - component: {fileID: 256229546}
+  - component: {fileID: 256229547}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -515,6 +516,22 @@ MonoBehaviour:
     gameObject: {fileID: 321524709}
   - state: 2
     gameObject: {fileID: 1729221100}
+  inputField: {fileID: 1054763690}
+  textAmount: {fileID: 2089925768}
+--- !u!114 &256229547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256229541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842d80a01145243f6a7bdf429e5f5ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 0}
+  lobbySceneName: Lobby
 --- !u!1001 &304540098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2683,6 +2700,8 @@ MonoBehaviour:
   lobbyCreateParent: {fileID: 1729221100}
   inputField: {fileID: 1054763690}
   textAmount: {fileID: 2089925768}
+  photonManager: {fileID: 0}
+  isCreatingLobby: 0
 --- !u!1 &1390797023
 GameObject:
   m_ObjectHideFlags: 0
@@ -3361,9 +3380,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341999761}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: LoadMainScene
+      - m_Target: {fileID: 256229546}
+        m_TargetAssemblyTypeName: LobbyViewModel, Assembly-CSharp
+        m_MethodName: OnConfirmNameButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
