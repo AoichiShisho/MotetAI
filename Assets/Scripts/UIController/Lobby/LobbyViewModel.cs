@@ -13,7 +13,7 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
     [SerializeField] private TMP_InputField nameInputField;
     [SerializeField] private TMP_InputField roomIdInputField;
     [SerializeField] private TMP_Text textAmount;
-    private PhotonManager photonManager;
+    [SerializeField] private PhotonManager photonManager;
 
     protected override void Start()
     {

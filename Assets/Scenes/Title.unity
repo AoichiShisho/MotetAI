@@ -403,7 +403,6 @@ GameObject:
   - component: {fileID: 256229543}
   - component: {fileID: 256229542}
   - component: {fileID: 256229546}
-  - component: {fileID: 256229547}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -519,19 +518,7 @@ MonoBehaviour:
   nameInputField: {fileID: 1054763690}
   roomIdInputField: {fileID: 1163316150}
   textAmount: {fileID: 2089925768}
---- !u!114 &256229547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 256229541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 842d80a01145243f6a7bdf429e5f5ba1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lobbySceneName: Lobby
+  photonManager: {fileID: 1341999761}
 --- !u!1001 &304540098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2641,7 +2628,7 @@ GameObject:
   - component: {fileID: 1341999760}
   - component: {fileID: 1341999761}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: PhotonManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
