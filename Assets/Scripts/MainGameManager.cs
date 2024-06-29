@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using System.IO;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
@@ -130,14 +131,32 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         string fullPrompt = $"{prompt}\nプレイヤーの行動: {action}\n結果:";
 
         chatGPTInteraction.SendQuestion(fullPrompt, result => {
-            photonView.RPC(nameof(DisplayResult), RpcTarget.All, result);
+            string actionText = result.Replace("プレイヤー", playerName);
+            string finalResult;
+
+            if (result.Contains("モテる！"))
+            {
+                finalResult = $"{playerName}はモテる！";
+            }
+            else if (result.Contains("モテない..."))
+            {
+                finalResult = $"{playerName}はモテない...";
+            }
+            else
+            {
+                finalResult = result;
+            }
+
+            photonView.RPC(nameof(DisplayResult), RpcTarget.All, actionText, finalResult);
         });
     }
 
     [PunRPC]
-    void DisplayResult(string result)
+    void DisplayResult(string actionText, string result)
     {
-        answerUIController.DisplayAnswer(result);
+        Debug.Log($"Displaying action text: {actionText}");
+        Debug.Log($"Displaying result: {result}");
+        answerUIController.DisplayAnswer(actionText, result);
         answerUIController.resultText.transform.parent.gameObject.SetActive(true);
         nextResultButton.gameObject.SetActive(true);
     }

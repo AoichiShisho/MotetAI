@@ -50,9 +50,6 @@ public class ChatGPTInteraction : MonoBehaviour
         // 返答からタグ類を削除して純粋な返答のみにする
         string cleanedResponse = ExtractAndLogFaceTags(responseContent, interestLevel);
         callback(cleanedResponse);
-
-        // ChatGPTの返答を表示
-        answerUIController.DisplayAnswer(cleanedResponse);
     }
 
     private string ExtractAndLogFaceTags(string input, int interestLevel) {

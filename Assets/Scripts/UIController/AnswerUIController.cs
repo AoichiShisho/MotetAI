@@ -8,13 +8,9 @@ public class AnswerUIController : MonoBehaviour
     public TextMeshProUGUI answerSceneText;
     public TextMeshProUGUI resultText;
 
-    public void DisplayAnswer(string answer)
+    public void DisplayAnswer(string actionText, string result)
     {
-        answerSceneText.text = answer;
-
-        if (answer.Contains("モテる"))
-            resultText.text = "プレイヤーはモテる!"; // 編集必要
-        else
-            resultText.text = "プレイヤーはモテない...";
+        answerSceneText.text = actionText;
+        resultText.text = result;
     }
 }
