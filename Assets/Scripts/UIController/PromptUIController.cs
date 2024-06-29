@@ -67,6 +67,7 @@ public class PromptUIController : MonoBehaviourPunCallbacks
         {
             // アカウント名を取得する
             masterClientAccountName = GetAccountName(PhotonNetwork.MasterClient);
+            Debug.Log(masterClientAccountName);
         }
     }
 

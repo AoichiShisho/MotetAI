@@ -130,8 +130,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void NotifyOtherPlayers(string playerName, string prompt)
     {
-        Debug.Log($"NotifyOtherPlayers called with playerName: {playerName} and prompt: {prompt}");
-        waitingText.text = $"{playerName}がシナリオを考え中...";
+        /*Debug.Log($"NotifyOtherPlayers called with playerName: {playerName} and prompt: {prompt}");
+        waitingText.text = $"{playerName}がシナリオを考え中...";*/
         waitingParent.SetActive(false);
         actionParent.SetActive(true);
         actionUIController.SetPrompt(prompt);
