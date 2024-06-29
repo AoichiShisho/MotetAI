@@ -76,3 +76,4 @@ crashlytics-build.properties
 # Ignore the large font asset file
 /Assets/Font/*
 config.json
+config.json.meta
