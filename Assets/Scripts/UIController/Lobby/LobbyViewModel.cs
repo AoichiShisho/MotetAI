@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public enum LobbyUIState {
@@ -63,7 +64,7 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
                 ConfirmCreateLobby();
                 break;
             case JoinMode.JOIN:
-                ConfirmJoinLobby();
+                NavigateInputIdUI();
                 break;
             default:
                 break;
@@ -79,7 +80,7 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
         photonManager.OnCreateLobbyButtonClicked();
     }
 
-    void ConfirmJoinLobby()
+    public void ConfirmJoinLobby()
     {
         string playerName = nameInputField.text;
         string roomId = roomIdInputField.text;
