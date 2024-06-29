@@ -47,6 +47,8 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
 
     public void OnConfirmButtonClicked()
     {
+        Debug.Log(joinMode);
+
         switch (joinMode)
         {
             case JoinMode.CREATE:
