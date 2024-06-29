@@ -34,6 +34,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
+        customProperties["accountName"] = PhotonNetwork.NickName;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
+
         PhotonNetwork.LoadLevel(lobbySceneName);
     }
 
