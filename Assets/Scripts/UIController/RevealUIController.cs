@@ -14,17 +14,12 @@ public class RevealUIController : FadeController
     public GameObject revealParent;
     public GameObject answerParent;
 
-    void Start()
-    {
-        proceedButton.onClick.AddListener(ProceedToAnswer);
-    }
-
     public void SetActionText(string action)
     {
         actionText.text = action;
     }
 
-    async void ProceedToAnswer()
+    public async void ProceedToAnswer()
     {
         await FadeOut(revealParent);
 

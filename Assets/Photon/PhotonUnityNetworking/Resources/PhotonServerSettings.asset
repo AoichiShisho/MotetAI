@@ -46,6 +46,10 @@ MonoBehaviour:
   - RPC_DisplayNextAction
   - RPC_SubmitAction
   - DisplayNextAction
+  - DisplayResult
+  - HideRevealParent
+  - ShowRevealParent
+  - HideActionWaitingParent
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
