@@ -41,7 +41,13 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
 
     public void NavigateInputIdUI()
     {
-        SetUIState(LobbyUIState.INPUT_ID);
+        string playerName = nameInputField.text;
+        photonManager.SetPlayerName(playerName);
+
+        if (!string.IsNullOrEmpty(playerName))
+        {
+            SetUIState(LobbyUIState.INPUT_ID);
+        }
     }
 
     public void SetJoinMode()
@@ -74,20 +80,16 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
     void ConfirmCreateLobby()
     {
         string playerName = nameInputField.text;
-        if (string.IsNullOrEmpty(playerName)) return;
+        //if (string.IsNullOrEmpty(playerName)) return;
 
         photonManager.SetPlayerName(playerName);
-        photonManager.OnCreateLobbyButtonClicked();
+        photonManager.OnCreateLobbyButtonClicked(playerName);
     }
 
     public void ConfirmJoinLobby()
     {
-        string playerName = nameInputField.text;
         string roomId = roomIdInputField.text;
-        if (string.IsNullOrEmpty(roomId)) return;
-        if (string.IsNullOrEmpty(playerName)) return;
 
-        photonManager.SetPlayerName(playerName);
         photonManager.OnJoinButtonClicked(roomId);
     }
 
