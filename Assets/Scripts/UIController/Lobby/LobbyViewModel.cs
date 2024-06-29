@@ -5,20 +5,26 @@ using UnityEngine;
 [Serializable]
 public enum LobbyUIState {
     SELECT,
+    INPUT_ID,
+    INPUT_NAME,
+}
+
+public enum JoinMode {
+    EMPTY,
+    CREATE,
     JOIN,
-    CREATE
 }
 
 public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
     [SerializeField] private TMP_InputField nameInputField;
     [SerializeField] private TMP_InputField roomIdInputField;
     [SerializeField] private TMP_Text textAmount;
-    private PhotonManager photonManager;
+    [SerializeField] private PhotonManager photonManager;
+    private JoinMode joinMode = JoinMode.EMPTY;
 
     protected override void Start()
     {
         base.Start();
-        photonManager = GetComponent<PhotonManager>();
         nameInputField.onValueChanged.AddListener(UpdateTextAmount);
     }
 
@@ -27,17 +33,44 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
         SetUIState(LobbyUIState.SELECT);
     }
 
-    public void OnLobbyCreateButtonClicked()
+    public void NavigateInputNameUI()
     {
-        SetUIState(LobbyUIState.CREATE);
+        SetUIState(LobbyUIState.INPUT_NAME);
     }
 
-    public void OnLobbyJoinButtonClicked()
+    public void NavigateInputIdUI()
     {
-        SetUIState(LobbyUIState.JOIN);
+        SetUIState(LobbyUIState.INPUT_ID);
     }
 
-    public void OnConfirmCreateButtonClicked()
+    public void SetJoinMode()
+    {
+        joinMode = JoinMode.JOIN;
+    }
+
+    public void SetCreateMode()
+    {
+        joinMode = JoinMode.CREATE;
+    }
+
+    public void OnConfirmButtonClicked()
+    {
+        Debug.Log(joinMode);
+
+        switch (joinMode)
+        {
+            case JoinMode.CREATE:
+                ConfirmCreateLobby();
+                break;
+            case JoinMode.JOIN:
+                ConfirmJoinLobby();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void ConfirmCreateLobby()
     {
         string playerName = nameInputField.text;
         if (string.IsNullOrEmpty(playerName)) return;
@@ -46,11 +79,14 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
         photonManager.OnCreateLobbyButtonClicked();
     }
 
-    public void OnConfirmJoinButtonClicked()
+    void ConfirmJoinLobby()
     {
+        string playerName = nameInputField.text;
         string roomId = roomIdInputField.text;
         if (string.IsNullOrEmpty(roomId)) return;
+        if (string.IsNullOrEmpty(playerName)) return;
 
+        photonManager.SetPlayerName(playerName);
         photonManager.OnJoinButtonClicked(roomId);
     }
 
