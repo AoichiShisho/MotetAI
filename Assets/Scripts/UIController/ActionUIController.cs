@@ -19,12 +19,14 @@ public class ActionUIController : FadeController
     private PromptUIController promptUIController;
     private ChatGPTInteraction chatGPTInteraction;
     private RevealUIController revealUIController;
+    private MainGameManager mainGameManager;
 
     void Start()
     {
         promptUIController = GetComponent<PromptUIController>();
         chatGPTInteraction = GetComponent<ChatGPTInteraction>();
         revealUIController = GetComponent<RevealUIController>();
+        mainGameManager = FindObjectOfType<MainGameManager>();
 
         submitActionButton.onClick.AddListener(SubmitAction);
         actionInputField.onValueChanged.AddListener(UpdateTextAmount);
@@ -39,28 +41,13 @@ public class ActionUIController : FadeController
 
     async void SubmitAction()
     {
-        string scenario = promptUIController.GetCurrentPrompt();
         string action = actionInputField.text;
-        string prompt = $"{scenario}\nプレイヤーの行動: {action}\n結果:";
-
-        chatGPTInteraction.SendQuestion(prompt, DisplayResult);
-
-        revealUIController.SetActionText(action);
+        mainGameManager.SubmitAction(action);
 
         await FadeOut(actionParent);
-
-        await FadeOut(actionWaitingParent);
-
         actionParent.SetActive(false);
-        actionWaitingParent.SetActive(false);
-        revealParent.SetActive(true);
-
-        await FadeIn(revealParent);
-    }
-
-    void DisplayResult(string result)
-    {
-        Debug.Log(result);
+        actionWaitingParent.SetActive(true);
+        await FadeIn(actionWaitingParent);
     }
 
     void UpdateTextAmount(string text)

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657886, g: 0.49641275, b: 0.5748176, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3033,10 +3033,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   promptUIController: {fileID: 1193883810}
   actionUIController: {fileID: 1193883812}
+  revealUIController: {fileID: 1193883814}
+  answerUIController: {fileID: 1193883815}
+  chatGPTInteraction: {fileID: 1193883813}
   waitingText: {fileID: 589416894}
   waitingParent: {fileID: 1399052963}
   promptParent: {fileID: 1554029536}
   actionParent: {fileID: 373521761}
+  actionWaitingParent: {fileID: 162050101}
 --- !u!224 &1265111890 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8096761534368502603, guid: 92a1b401fadff4728af36517a8ba1176, type: 3}
