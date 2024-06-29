@@ -52,7 +52,8 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
 
         if (currentState == LobbyUIState.JOIN)
         {
-            photonManager.OnJoinButtonClicked();
+            string roomId = inputField.text;
+            photonManager.OnJoinButtonClicked(roomId);
         }
     }
 

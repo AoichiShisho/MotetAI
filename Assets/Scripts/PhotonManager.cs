@@ -5,7 +5,6 @@ using TMPro;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
-    public TMP_InputField inputField;
     [SerializeField] private string lobbySceneName = "Lobby";
 
     void Awake()
@@ -24,11 +23,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(roomName, new RoomOptions());
     }
 
-    public void OnJoinButtonClicked()
+    public void OnJoinButtonClicked(string roomId)
     {
-        string roomName = inputField.text;
-        if (!string.IsNullOrEmpty(roomName)) {
-            PhotonNetwork.JoinRoom(roomName);
+        if (!string.IsNullOrEmpty(roomId)) {
+            PhotonNetwork.JoinRoom(roomId);
         } else {
             Debug.LogError("Room name is empty!");
             // ここにUIを表示する処理を追加
