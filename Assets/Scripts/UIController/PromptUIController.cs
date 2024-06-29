@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
+using Photon.Realtime;
+using Photon.Pun.Demo.PunBasics;
 
 public class PromptUIController : MonoBehaviourPunCallbacks
 {
@@ -32,6 +34,9 @@ public class PromptUIController : MonoBehaviourPunCallbacks
     private PhotonView photonView;
     private MainGameManager mainGameManager;
 
+    Player masterClient = PhotonNetwork.MasterClient;
+    public string masterClientAccountName;
+
     void Start()
     {
         Debug.Log("PromptUIController Start called");
@@ -58,6 +63,25 @@ public class PromptUIController : MonoBehaviourPunCallbacks
         waitingParent.SetActive(false);
 
         UpdateTextAmount(inputField.text);
+        
+        if (masterClient != null)
+        {
+            // アカウント名を取得する
+            masterClientAccountName = GetAccountName(masterClient);
+        }   
+    }
+
+    private string GetAccountName(Player player)
+    {
+        // プレイヤーのカスタムプロパティからアカウント名を取得する
+        if (player.CustomProperties.ContainsKey("accountName"))
+        {
+            return player.CustomProperties["accountName"].ToString();
+        }
+        else
+        {
+            return "Unknown";
+        }
     }
 
     [PunRPC]

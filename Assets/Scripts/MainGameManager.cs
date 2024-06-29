@@ -23,7 +23,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     void Start()
     {
         Debug.Log("MainGameManager Start called");
-        photonView.RPC("SetupUI", RpcTarget.All, PhotonNetwork.NickName);
+        photonView.RPC(nameof(SetupUI), RpcTarget.All, PhotonNetwork.NickName);
     }
 
     [PunRPC]
@@ -31,6 +31,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log($"SetupUI called. IsMasterClient: {PhotonNetwork.IsMasterClient}");
         promptUIController.InitializeUI();
+        playerName = promptUIController.masterClientAccountName;
         waitingText.text = $"{playerName}がシナリオを考え中...";
     }
 
