@@ -3342,7 +3342,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 256229546}
         m_TargetAssemblyTypeName: LobbyViewModel, Assembly-CSharp
-        m_MethodName: OnConfirmButtonClicked
+        m_MethodName: NavigateInputNameUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
