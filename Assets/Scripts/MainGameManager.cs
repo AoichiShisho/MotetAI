@@ -1,11 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using System.Collections.Generic;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
+    public class PlayerActionResult
+    {
+        public string Action { get; set; }
+        public string Result { get; set; }
+    }
+
     public PromptUIController promptUIController;
     public ActionUIController actionUIController;
     public RevealUIController revealUIController;
@@ -16,14 +23,16 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public GameObject promptParent;
     public GameObject actionParent;
     public GameObject actionWaitingParent;
+    public Button nextResultButton;
 
-    private Dictionary<string, string> playerActions = new Dictionary<string, string>();
+    private Dictionary<string, PlayerActionResult> playerActionResults = new Dictionary<string, PlayerActionResult>();
     private int currentActionIndex = 0;
 
     void Start()
     {
         Debug.Log("MainGameManager Start called");
         photonView.RPC(nameof(SetupUI), RpcTarget.All, PhotonNetwork.NickName);
+        nextResultButton.onClick.AddListener(OnNextResultButtonClicked);
     }
 
     [PunRPC]
@@ -31,7 +40,6 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log($"SetupUI called. IsMasterClient: {PhotonNetwork.IsMasterClient}");
         promptUIController.InitializeUI();
-        playerName = promptUIController.masterClientAccountName;
         waitingText.text = $"{playerName}がシナリオを考え中...";
     }
 
@@ -39,28 +47,32 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("NotifyOtherPlayers", RpcTarget.All, PhotonNetwork.NickName, promptUIController.GetCurrentPrompt());
+            photonView.RPC(nameof(NotifyOtherPlayers), RpcTarget.All, PhotonNetwork.NickName, promptUIController.GetCurrentPrompt());
         }
     }
 
     public void SubmitAction(string action)
     {
-        photonView.RPC("RPC_SubmitAction", RpcTarget.All, PhotonNetwork.NickName, action);
+        photonView.RPC(nameof(RPC_SubmitAction), RpcTarget.All, PhotonNetwork.NickName, action);
         ShowWaitingUI();
     }
 
     [PunRPC]
     void RPC_SubmitAction(string playerName, string action)
     {
-        playerActions[playerName] = action;
+        if (!playerActionResults.ContainsKey(playerName))
+        {
+            playerActionResults[playerName] = new PlayerActionResult { Action = action, Result = "" };
+        }
         CheckAllActionsSubmitted();
     }
 
     void CheckAllActionsSubmitted()
     {
-        if (playerActions.Count == PhotonNetwork.PlayerList.Length)
+        if (playerActionResults.Count == PhotonNetwork.PlayerList.Length)
         {
-            photonView.RPC("DisplayNextAction", RpcTarget.All);
+            photonView.RPC(nameof(HideActionWaitingParents), RpcTarget.All);
+            photonView.RPC(nameof(DisplayNextAction), RpcTarget.All);
         }
     }
 
@@ -70,17 +82,36 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         if (currentActionIndex < PhotonNetwork.PlayerList.Length)
         {
             string playerName = PhotonNetwork.PlayerList[currentActionIndex].NickName;
-            string action = playerActions[playerName];
+            string action = playerActionResults[playerName].Action;
             revealUIController.SetActionText(action);
             revealUIController.proceedButton.onClick.RemoveAllListeners();
             revealUIController.proceedButton.onClick.AddListener(OnProceedButtonClicked);
-            revealUIController.revealParent.SetActive(true);
-            currentActionIndex++;
+            photonView.RPC(nameof(ShowRevealParent), RpcTarget.All);
         }
         else
         {
             Debug.Log("All actions have been displayed.");
         }
+    }
+
+    [PunRPC]
+    void ShowRevealParent()
+    {
+        revealUIController.revealParent.SetActive(true);
+        answerUIController.resultText.transform.parent.gameObject.SetActive(false);
+        nextResultButton.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    void HideRevealParent()
+    {
+        revealUIController.revealParent.SetActive(false);
+    }
+
+    [PunRPC]
+    void HideActionWaitingParents()
+    {
+        actionWaitingParent.SetActive(false);
     }
 
     void ShowWaitingUI()
@@ -91,40 +122,46 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     void OnProceedButtonClicked()
     {
-        revealUIController.revealParent.SetActive(false);
+        photonView.RPC(nameof(HideRevealParent), RpcTarget.All);
 
-        if (currentActionIndex <= PhotonNetwork.PlayerList.Length)
+        string playerName = PhotonNetwork.PlayerList[currentActionIndex].NickName;
+        string action = playerActionResults[playerName].Action;
+        string prompt = promptUIController.GetCurrentPrompt();
+        string fullPrompt = $"{prompt}\nプレイヤーの行動: {action}\n結果:";
+
+        chatGPTInteraction.SendQuestion(fullPrompt, result => {
+            photonView.RPC(nameof(DisplayResult), RpcTarget.All, result);
+        });
+    }
+
+    [PunRPC]
+    void DisplayResult(string result)
+    {
+        answerUIController.DisplayAnswer(result);
+        answerUIController.resultText.transform.parent.gameObject.SetActive(true);
+        nextResultButton.gameObject.SetActive(true);
+    }
+
+    void OnNextResultButtonClicked()
+    {
+        answerUIController.resultText.transform.parent.gameObject.SetActive(false);
+        nextResultButton.gameObject.SetActive(false);
+
+        if (currentActionIndex < PhotonNetwork.PlayerList.Length - 1)
         {
-            string playerName = PhotonNetwork.PlayerList[currentActionIndex - 1].NickName;
-            string action = playerActions[playerName];
-            string prompt = promptUIController.GetCurrentPrompt();
-            string fullPrompt = $"{prompt}\nプレイヤーの行動: {action}\n結果:";
-
-            chatGPTInteraction.SendQuestion(fullPrompt, DisplayResult);
+            currentActionIndex++;
+            photonView.RPC(nameof(DisplayNextAction), RpcTarget.All);
         }
         else
         {
             Debug.Log("All actions have been displayed.");
-        }
-    }
-
-    void DisplayResult(string result)
-    {
-        answerUIController.DisplayAnswer(result);
-
-        if (currentActionIndex < PhotonNetwork.PlayerList.Length)
-        {
-            photonView.RPC("DisplayNextAction", RpcTarget.All);
-        }
-        else
-        {
-            revealUIController.proceedButton.onClick.RemoveListener(OnProceedButtonClicked);
+            currentActionIndex = 0; // リセット
         }
     }
 
     public void NotifyOtherPlayersRPC(string playerName, string prompt)
     {
-        photonView.RPC("NotifyOtherPlayers", RpcTarget.All, playerName, prompt);
+        photonView.RPC(nameof(NotifyOtherPlayers), RpcTarget.All, playerName, prompt);
     }
 
     [PunRPC]
