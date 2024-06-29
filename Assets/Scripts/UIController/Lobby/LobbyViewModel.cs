@@ -10,7 +10,8 @@ public enum LobbyUIState {
 }
 
 public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
-    [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private TMP_InputField nameInputField;
+    [SerializeField] private TMP_InputField roomIdInputField;
     [SerializeField] private TMP_Text textAmount;
     private PhotonManager photonManager;
 
@@ -18,7 +19,7 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
     {
         base.Start();
         photonManager = GetComponent<PhotonManager>();
-        inputField.onValueChanged.AddListener(UpdateTextAmount);
+        nameInputField.onValueChanged.AddListener(UpdateTextAmount);
     }
 
     public void OnLobbySelectButtonClicked()
@@ -36,31 +37,27 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
         SetUIState(LobbyUIState.JOIN);
     }
 
-    public void OnConfirmNameButtonClicked()
+    public void OnConfirmCreateButtonClicked()
     {
-        string playerName = inputField.text;
+        string playerName = nameInputField.text;
         if (string.IsNullOrEmpty(playerName)) return;
-        
+
         photonManager.SetPlayerName(playerName);
+        photonManager.OnCreateLobbyButtonClicked();
+    }
 
-        LobbyUIState currentState = GetCurrentState();
+    public void OnConfirmJoinButtonClicked()
+    {
+        string roomId = roomIdInputField.text;
+        if (string.IsNullOrEmpty(roomId)) return;
 
-        if (currentState == LobbyUIState.CREATE)
-        {
-            photonManager.OnCreateLobbyButtonClicked();
-        }
-
-        if (currentState == LobbyUIState.JOIN)
-        {
-            string roomId = inputField.text;
-            photonManager.OnJoinButtonClicked(roomId);
-        }
+        photonManager.OnJoinButtonClicked(roomId);
     }
 
     void UpdateTextAmount(string text)
     {
         int currentLength = text.Length;
-        int maxChars = inputField.characterLimit;
+        int maxChars = nameInputField.characterLimit;
 
         textAmount.text = $"{currentLength}/{maxChars}";
 
