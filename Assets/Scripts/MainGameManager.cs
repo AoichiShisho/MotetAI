@@ -151,7 +151,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         string fullPrompt = $"{prompt}\nプレイヤーの行動: {action}\n結果:";
 
         chatGPTInteraction.SendQuestion(fullPrompt, result => {
-            string personalizedResult = result.Replace("プレイヤー", playerName);
+            string unPersonalizedResult = result.Replace("player", playerName);
+            string personalizedResult = unPersonalizedResult.Replace("プレイヤー", playerName);
             string finalResult;
             
             Debug.Log(result);
