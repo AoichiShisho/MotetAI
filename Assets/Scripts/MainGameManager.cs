@@ -74,8 +74,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     public void SubmitAction(string action)
     {
-        photonView.RPC(nameof(RPC_SubmitAction), RpcTarget.All, PhotonNetwork.NickName, action);
         ShowWaitingUI();
+        photonView.RPC(nameof(RPC_SubmitAction), RpcTarget.All, PhotonNetwork.NickName, action);
     }
 
     [PunRPC]
