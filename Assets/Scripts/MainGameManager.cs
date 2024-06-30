@@ -9,12 +9,6 @@ using UnityEngine.SceneManagement;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
-    public class PlayerActionResult
-    {
-        public string Action { get; set; }
-        public string Result { get; set; }
-    }
-
     public PromptUIController promptUIController;
     public ActionUIController actionUIController;
     public RevealUIController revealUIController;
@@ -192,4 +186,10 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         actionParent.SetActive(true);
         actionUIController.SetPrompt(prompt);
     }
+}
+
+public class PlayerActionResult
+{
+    public string Action { get; set; }
+    public string Result { get; set; }
 }
