@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using System.IO;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
@@ -24,7 +23,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public GameObject promptParent;
     public GameObject actionParent;
     public GameObject actionWaitingParent;
+    public GameObject disconnectPanel;
     public Button nextResultButton;
+    public Button returnToTitleButton;
 
     private Dictionary<string, PlayerActionResult> playerActionResults = new Dictionary<string, PlayerActionResult>();
     private int currentActionIndex = 0;
@@ -34,6 +35,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         Debug.Log("MainGameManager Start called");
         photonView.RPC(nameof(SetupUI), RpcTarget.All, PhotonNetwork.NickName);
         nextResultButton.onClick.AddListener(OnNextResultButtonClicked);
+        returnToTitleButton.onClick.AddListener(ReturnToTitle);
+        disconnectPanel.SetActive(false);
     }
 
     [PunRPC]
@@ -52,10 +55,27 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        photonView.RPC(nameof(HandlePlayerLeft), RpcTarget.All);
+    }
+
+    [PunRPC]
+    void HandlePlayerLeft()
+    {
+        disconnectPanel.SetActive(true);
+    }
+
+    void ReturnToTitle()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel("Title");
+    }
+
     public void SubmitAction(string action)
     {
-        ShowWaitingUI();
         photonView.RPC(nameof(RPC_SubmitAction), RpcTarget.All, PhotonNetwork.NickName, action);
+        ShowWaitingUI();
     }
 
     [PunRPC]
@@ -131,7 +151,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         string fullPrompt = $"{prompt}\nプレイヤーの行動: {action}\n結果:";
 
         chatGPTInteraction.SendQuestion(fullPrompt, result => {
-            string actionText = result.Replace("プレイヤー", playerName);
+            string personalizedResult = result.Replace("プレイヤー", playerName);
             string finalResult;
 
             if (result.Contains("モテる！"))
@@ -147,7 +167,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                 finalResult = result;
             }
 
-            photonView.RPC(nameof(DisplayResult), RpcTarget.All, actionText, finalResult);
+            photonView.RPC(nameof(DisplayResult), RpcTarget.All, personalizedResult, finalResult);
         });
     }
 

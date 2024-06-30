@@ -62,12 +62,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override async void OnJoinRoomFailed (short returnCode, string roomId)
     {
-            Debug.LogError($"RoomId: { roomId }は存在しません");
-            errorImage.SetActive(true);
-            errorText.text = "ルームIDが存在しません。";
+        Debug.LogError($"RoomId: { roomId }は存在しません");
+        errorImage.SetActive(true);
+        errorText.text = "ルームIDが存在しません。";
 
-            await UniTask.Delay(1000);
-            errorImage.SetActive(false);
+        await UniTask.Delay(1000);
+        errorImage.SetActive(false);
     }
 
     public override void OnJoinedRoom()
@@ -93,5 +93,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         while (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.Name == roomId);
     
         return roomId;
+    }
+
+    public void ReturnToTitle()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel("Title");
     }
 }
