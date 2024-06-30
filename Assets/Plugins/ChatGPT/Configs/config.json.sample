@@ -2,6 +2,6 @@
     "MODEL": "gpt-4o",
     "API_URL": "https://api.openai.com/v1/chat/completions",
     "API_KEY": "Your api key",
-    "MAX_TOKENS": 150,
+    "MAX_TOKENS": 300,
     "TEMPERATURE": 1.0
 }
