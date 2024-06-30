@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public static class TMP_InputFieldExtensions
+public static class TMP_InputFieldExt
 {
     public static void AddTextAmountUpdater(this TMP_InputField inputField, TextMeshProUGUI textAmount)
     {

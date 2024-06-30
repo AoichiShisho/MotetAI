@@ -1,20 +1,5 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-
-[Serializable]
-public enum LobbyUIState {
-    SELECT,
-    INPUT_ID,
-    INPUT_NAME,
-}
-
-public enum JoinMode {
-    EMPTY,
-    CREATE,
-    JOIN,
-}
 
 public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
     [SerializeField] private TMP_InputField nameInputField;

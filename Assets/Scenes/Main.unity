@@ -2789,7 +2789,7 @@ GameObject:
   - component: {fileID: 975899202}
   - component: {fileID: 975899201}
   m_Layer: 5
-  m_Name: DisconnectPanel
+  m_Name: Disconnect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -207,11 +207,11 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     public void NotifyOtherPlayersRPC(string playerName, string prompt)
     {
-        photonView.RPC(nameof(NotifyOtherPlayers), RpcTarget.All, playerName, prompt);
+        photonView.RPC(nameof(NotifyOtherPlayers), RpcTarget.All, prompt);
     }
 
     [PunRPC]
-    void NotifyOtherPlayers(string playerName, string prompt)
+    void NotifyOtherPlayers(string prompt)
     {
         waitingParent.SetActive(false);
         actionParent.SetActive(true);

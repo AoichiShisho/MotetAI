@@ -13,7 +13,6 @@ public class PromptUIController : MonoBehaviourPunCallbacks
     public TextMeshProUGUI textAmount;
 
     [Header("Buttons")]
-    public Button changePromptButton;
     public Button editButton;
     public Button confirmChangeButton;
     public Button confirmPromptButton;
@@ -45,8 +44,7 @@ public class PromptUIController : MonoBehaviourPunCallbacks
             Debug.LogError("ActionUIController is missing!");
         
         mainGameManager = FindObjectOfType<MainGameManager>();
-
-        changePromptButton.onClick.AddListener(ChangePrompt);
+        
         editButton.onClick.AddListener(EditPrompt);
         confirmChangeButton.onClick.AddListener(ConfirmEdit);
         confirmPromptButton.onClick.AddListener(ConfirmPrompt);
@@ -96,13 +94,12 @@ public class PromptUIController : MonoBehaviourPunCallbacks
         }
     }
 
-    void ChangePrompt()
+    public void ChangePrompt()
     {
-        if (prompts.Length > 0)
-        {
-            currentPromptIndex = (currentPromptIndex + 1) % prompts.Length;
-            promptText.text = prompts[currentPromptIndex];
-        }
+        if (prompts.Length <= 0) return;
+        
+        currentPromptIndex = (currentPromptIndex + 1) % prompts.Length;
+        promptText.text = prompts[currentPromptIndex];
     }
 
     void EditPrompt()
@@ -113,7 +110,6 @@ public class PromptUIController : MonoBehaviourPunCallbacks
             inputField.text = promptText.text;
             inputField.gameObject.SetActive(true);
             confirmChangeButton.gameObject.SetActive(true);
-            changePromptButton.gameObject.SetActive(false);
             editButton.gameObject.SetActive(false);
             confirmPromptButton.gameObject.SetActive(false);
             isEditing = true;
@@ -128,7 +124,6 @@ public class PromptUIController : MonoBehaviourPunCallbacks
             prompts[currentPromptIndex] = inputField.text;
             inputField.gameObject.SetActive(false);
             confirmChangeButton.gameObject.SetActive(false);
-            changePromptButton.gameObject.SetActive(true);
             editButton.gameObject.SetActive(true);
             promptText.gameObject.SetActive(true);
             confirmPromptButton.gameObject.SetActive(true);
