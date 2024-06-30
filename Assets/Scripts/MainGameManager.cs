@@ -21,7 +21,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public GameObject actionWaitingParent;
     public Button nextResultButton;
 
-    private Dictionary<string, PlayerActionResult> playerActionResults = new Dictionary<string, PlayerActionResult>();
+    private Dictionary<string, PlayerActionResult> playerActionResults = new();
     private int currentActionIndex = 0;
 
     void Start()
