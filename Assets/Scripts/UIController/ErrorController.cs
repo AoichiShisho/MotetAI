@@ -6,31 +6,28 @@ public class ErrorController : MonoBehaviour
     [SerializeField] private RectTransform errorImageRect;
     [SerializeField] private float animationDuration = 0.5f;
     [SerializeField] private float displayDuration = 1.0f;
+    [SerializeField] private float moveDistance = 150f;
 
-    private Vector2 offScreenPosition;
-    private Vector2 onScreenPosition;
+    private Vector2 originalPosition;
     private Tweener currentTween;
 
     void Start()
     {
-        offScreenPosition = new Vector2(errorImageRect.anchoredPosition.x, Screen.height + errorImageRect.rect.height);
-        onScreenPosition = errorImageRect.anchoredPosition;
-
-        errorImageRect.anchoredPosition = offScreenPosition;
+        originalPosition = errorImageRect.anchoredPosition;
     }
 
     public void ShowError()
     {
         if (currentTween != null && currentTween.IsActive())
         {
-            currentTween.Kill();
+            currentTween.Kill(false);
         }
 
-        currentTween = errorImageRect.DOAnchorPos(onScreenPosition, animationDuration).OnComplete(() =>
+        currentTween = errorImageRect.DOAnchorPos(new Vector2(originalPosition.x, originalPosition.y - moveDistance), animationDuration).OnComplete(() =>
         {
             DOVirtual.DelayedCall(displayDuration, () =>
             {
-                currentTween = errorImageRect.DOAnchorPos(offScreenPosition, animationDuration);
+                currentTween = errorImageRect.DOAnchorPos(originalPosition, animationDuration);
             });
         });
     }

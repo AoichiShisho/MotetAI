@@ -614,6 +614,7 @@ MonoBehaviour:
   errorImageRect: {fileID: 664452981}
   animationDuration: 0.5
   displayDuration: 1
+  moveDistance: 150
 --- !u!1 &288403247
 GameObject:
   m_ObjectHideFlags: 0
@@ -4007,7 +4008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8179051718319217851, guid: eddaaec20aef045b7b9f4fc9897888fa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 375
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 8179051718319217851, guid: eddaaec20aef045b7b9f4fc9897888fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
