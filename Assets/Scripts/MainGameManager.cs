@@ -185,6 +185,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         answerUIController.DisplayAnswer(actionText, result);
         answerUIController.resultText.transform.parent.gameObject.SetActive(true);
         nextResultButton.gameObject.SetActive(true);
+
+        SoundManager.Instance.PlayResultSound(result);
     }
 
     void OnNextResultButtonClicked()
