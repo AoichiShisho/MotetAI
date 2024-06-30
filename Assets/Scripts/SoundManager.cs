@@ -24,11 +24,12 @@ public class SoundManager : MonoBehaviour
             bgmAudioSource.loop = true;
             bgmAudioSource.playOnAwake = false;
             bgmAudioSource.clip = bgmClip;
-            bgmAudioSource.volume = 0.5f;
+            bgmAudioSource.volume = 0.2f;
 
             sfxAudioSource = gameObject.AddComponent<AudioSource>();
             sfxAudioSource.loop = false;
             sfxAudioSource.playOnAwake = false;
+            sfxAudioSource.volume = 0.4f;
 
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
