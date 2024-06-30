@@ -20,13 +20,11 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public ChatGPTInteraction chatGPTInteraction;
     public TextMeshProUGUI waitingText;
     public GameObject waitingParent;
-    public GameObject promptParent;
     public GameObject actionParent;
     public GameObject actionWaitingParent;
     public GameObject disconnectPanel;
     public Button nextResultButton;
     public Button returnToTitleButton;
-    private Dictionary<string, PlayerActionResult> playerActionResults = new Dictionary<string, PlayerActionResult>();
 
     private int currentActionIndex = 0;
 
