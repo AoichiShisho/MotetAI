@@ -22,9 +22,7 @@ public class ActionUIController : FadeController
         mainGameManager = FindObjectOfType<MainGameManager>();
 
         submitActionButton.onClick.AddListener(SubmitAction);
-        actionInputField.onValueChanged.AddListener(UpdateTextAmount);
-
-        UpdateTextAmount(actionInputField.text);
+        actionInputField.AddTextAmountUpdater(textAmount);
     }
 
     public void SetPrompt(string prompt)
@@ -41,18 +39,5 @@ public class ActionUIController : FadeController
         Debug.Log("ShowWaiting");
 
         mainGameManager.SubmitAction(action);
-    }
-
-    void UpdateTextAmount(string text)
-    {
-        int currentLength = text.Length;
-        int maxChars = actionInputField.characterLimit;
-
-        textAmount.text = $"{currentLength}/{maxChars}";
-
-        if (currentLength >= maxChars)
-            textAmount.color = new Color32(255, 87, 87, 255); // FF5757
-        else
-            textAmount.color = new Color32(87, 87, 87, 255); // 575757
     }
 }

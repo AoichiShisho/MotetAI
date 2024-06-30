@@ -26,7 +26,7 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
     protected override void Start()
     {
         base.Start();
-        nameInputField.onValueChanged.AddListener(UpdateTextAmount);
+        nameInputField.AddTextAmountUpdater(textAmount);
     }
 
     public void OnLobbySelectButtonClicked()
@@ -72,15 +72,12 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
             case JoinMode.JOIN:
                 NavigateInputIdUI();
                 break;
-            default:
-                break;
         }
     }
 
     void ConfirmCreateLobby()
     {
         string playerName = nameInputField.text;
-        //if (string.IsNullOrEmpty(playerName)) return;
 
         photonManager.SetPlayerName(playerName);
         photonManager.OnCreateLobbyButtonClicked(playerName);
@@ -91,18 +88,5 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
         string roomId = roomIdInputField.text;
 
         photonManager.OnJoinButtonClicked(roomId);
-    }
-
-    void UpdateTextAmount(string text)
-    {
-        int currentLength = text.Length;
-        int maxChars = nameInputField.characterLimit;
-
-        textAmount.text = $"{currentLength}/{maxChars}";
-
-        if (currentLength >= maxChars)
-            textAmount.color = new Color32(255, 87, 87, 255); // FF5757
-        else
-            textAmount.color = new Color32(87, 87, 87, 255); // 575757
     }
 }

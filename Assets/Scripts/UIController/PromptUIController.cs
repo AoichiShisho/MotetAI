@@ -53,12 +53,10 @@ public class PromptUIController : MonoBehaviourPunCallbacks
 
         inputField.interactable = true;
         inputField.textComponent.enableWordWrapping = true;
-        inputField.onValueChanged.AddListener(UpdateTextAmount);
         inputField.gameObject.SetActive(false);
+        inputField.AddTextAmountUpdater(textAmount);
         actionParent.SetActive(false);
         waitingParent.SetActive(false);
-
-        UpdateTextAmount(inputField.text);
         
         if (PhotonNetwork.MasterClient != null)
         {
@@ -74,10 +72,8 @@ public class PromptUIController : MonoBehaviourPunCallbacks
         {
             return player.CustomProperties["accountName"].ToString();
         }
-        else
-        {
-            return "Unknown";
-        }
+        
+        return "Unknown";
     }
 
     [PunRPC]
@@ -156,18 +152,5 @@ public class PromptUIController : MonoBehaviourPunCallbacks
     public string GetCurrentPrompt()
     {
         return promptText.text;
-    }
-
-    void UpdateTextAmount(string text)
-    {
-        int currentLength = text.Length;
-        int maxChars = inputField.characterLimit;
-
-        textAmount.text = $"{currentLength}/{maxChars}";
-
-        if (currentLength >= maxChars)
-            textAmount.color = new Color32(255, 87, 87, 255); // FF5757
-        else
-            textAmount.color = new Color32(87, 87, 87, 255); // 575757
     }
 }
