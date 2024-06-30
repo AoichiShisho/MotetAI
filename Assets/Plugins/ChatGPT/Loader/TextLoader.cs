@@ -5,6 +5,6 @@ class TextLoader
 {
     public static string Load()
     {
-        return File.ReadAllText("./Assets/Scripts/ChatGPT/Configs/init_prompt.txt");
+        return File.ReadAllText("Assets/Plugins/ChatGPT/Configs/init_prompt.txt");
     }
 }
