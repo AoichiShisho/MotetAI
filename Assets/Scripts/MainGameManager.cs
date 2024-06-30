@@ -4,15 +4,15 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.SceneManagement;
+
+public static class PlayerSctionResultStore
+{
+    public static Dictionary<string, PlayerActionResult> shared = new();
+}
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
-    public class PlayerActionResult
-    {
-        public string Action { get; set; }
-        public string Result { get; set; }
-    }
-
     public PromptUIController promptUIController;
     public ActionUIController actionUIController;
     public RevealUIController revealUIController;
@@ -26,8 +26,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public GameObject disconnectPanel;
     public Button nextResultButton;
     public Button returnToTitleButton;
-
     private Dictionary<string, PlayerActionResult> playerActionResults = new Dictionary<string, PlayerActionResult>();
+
     private int currentActionIndex = 0;
 
     void Start()
@@ -81,16 +81,16 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_SubmitAction(string playerName, string action)
     {
-        if (!playerActionResults.ContainsKey(playerName))
+        if (!PlayerSctionResultStore.shared.ContainsKey(playerName))
         {
-            playerActionResults[playerName] = new PlayerActionResult { Action = action, Result = "" };
+            PlayerSctionResultStore.shared[playerName] = new PlayerActionResult { Action = action, Result = "" };
         }
         CheckAllActionsSubmitted();
     }
 
     void CheckAllActionsSubmitted()
     {
-        if (playerActionResults.Count == PhotonNetwork.PlayerList.Length)
+        if (PlayerSctionResultStore.shared.Count == PhotonNetwork.PlayerList.Length)
         {
             photonView.RPC(nameof(HideActionWaitingParents), RpcTarget.All);
             photonView.RPC(nameof(DisplayNextAction), RpcTarget.All);
@@ -103,7 +103,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         if (currentActionIndex < PhotonNetwork.PlayerList.Length)
         {
             string playerName = PhotonNetwork.PlayerList[currentActionIndex].NickName;
-            string action = playerActionResults[playerName].Action;
+            string action = PlayerSctionResultStore.shared[playerName].Action;
             revealUIController.SetActionText(action);
             revealUIController.proceedButton.onClick.RemoveAllListeners();
             revealUIController.proceedButton.onClick.AddListener(OnProceedButtonClicked);
@@ -146,28 +146,36 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         photonView.RPC(nameof(HideRevealParent), RpcTarget.All);
 
         string playerName = PhotonNetwork.PlayerList[currentActionIndex].NickName;
-        string action = playerActionResults[playerName].Action;
+        string action = PlayerSctionResultStore.shared[playerName].Action;
         string prompt = promptUIController.GetCurrentPrompt();
         string fullPrompt = $"{prompt}\nプレイヤーの行動: {action}\n結果:";
 
         chatGPTInteraction.SendQuestion(fullPrompt, result => {
             string personalizedResult = result.Replace("プレイヤー", playerName);
             string finalResult;
-
-            if (result.Contains("モテる！"))
+            
+            Debug.Log(result);
+            
+            
+            //FIXME: このresult判定のテキストうまく行ってない。
+            if (result.Contains("モテる"))
             {
                 finalResult = $"{playerName}はモテる！";
             }
-            else if (result.Contains("モテない..."))
+            else if (result.Contains("モテない"))
             {
                 finalResult = $"{playerName}はモテない...";
             }
             else
             {
-                finalResult = result;
+                finalResult = "判定不可";
             }
 
             photonView.RPC(nameof(DisplayResult), RpcTarget.All, personalizedResult, finalResult);
+
+            PlayerSctionResultStore.shared[playerName].Result = finalResult;
+
+            photonView.RPC(nameof(DisplayResult), RpcTarget.All, actionText, finalResult);
         });
     }
 
@@ -194,6 +202,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         else
         {
             Debug.Log("All actions have been displayed.");
+            SceneManager.LoadScene("Result");
             currentActionIndex = 0; // リセット
         }
     }
@@ -210,4 +219,10 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         actionParent.SetActive(true);
         actionUIController.SetPrompt(prompt);
     }
+}
+
+public class PlayerActionResult
+{
+    public string Action { get; set; }
+    public string Result { get; set; }
 }
