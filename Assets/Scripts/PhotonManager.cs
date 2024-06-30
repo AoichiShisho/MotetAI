@@ -8,7 +8,7 @@ using Cysharp.Threading.Tasks;
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private string lobbySceneName = "Lobby";
-    [SerializeField] private GameObject errorImage;
+    [SerializeField] private ErrorController errorController;
     [SerializeField] private TextMeshProUGUI errorText;
 
     void Awake()
@@ -25,11 +25,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         else 
         {
             Debug.LogError("名前がない");
-            errorImage.SetActive(true);
             errorText.text = "名前を入力してください。";
+            errorController.ShowError();
 
             await UniTask.Delay(1000);
-            errorImage.SetActive(false);
         }
     }
 
@@ -52,22 +51,20 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if (!isExistName)
         {
             Debug.LogError("ルームIDが入力されていません");
-            errorImage.SetActive(true);
             errorText.text = "ルームIDを入力してください。";
+            errorController.ShowError();
 
             await UniTask.Delay(1000);
-            errorImage.SetActive(false);
         }
     }
 
     public override async void OnJoinRoomFailed (short returnCode, string roomId)
     {
         Debug.LogError($"RoomId: { roomId }は存在しません");
-        errorImage.SetActive(true);
         errorText.text = "ルームIDが存在しません。";
+        errorController.ShowError();
 
         await UniTask.Delay(1000);
-        errorImage.SetActive(false);
     }
 
     public override void OnJoinedRoom()
