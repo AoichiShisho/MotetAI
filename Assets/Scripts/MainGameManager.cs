@@ -160,11 +160,11 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             //FIXME: このresult判定のテキストうまく行ってない。
             if (result.Contains("モテる"))
             {
-                finalResult = $"はモテる！";
+                finalResult = "モテる！";
             }
             else if (result.Contains("モテない"))
             {
-                finalResult = $"はモテない...";
+                finalResult = "モテない...";
             }
             else
             {
