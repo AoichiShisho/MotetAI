@@ -11,7 +11,6 @@ public class PromptUIController : MonoBehaviourPunCallbacks
     public TextMeshProUGUI promptText;
     public TMP_InputField inputField;
     public TextMeshProUGUI textAmount;
-    public TextMeshProUGUI waitingText;
 
     [Header("Buttons")]
     public Button changePromptButton;
@@ -31,7 +30,6 @@ public class PromptUIController : MonoBehaviourPunCallbacks
     private bool isEditing = false;
 
     private ActionUIController actionUIController;
-    private PhotonView photonView;
     private MainGameManager mainGameManager;
 
     public string masterClientAccountName;
@@ -45,8 +43,7 @@ public class PromptUIController : MonoBehaviourPunCallbacks
         actionUIController = GetComponent<ActionUIController>();
         if (actionUIController == null)
             Debug.LogError("ActionUIController is missing!");
-
-        photonView = GetComponent<PhotonView>();
+        
         mainGameManager = FindObjectOfType<MainGameManager>();
 
         changePromptButton.onClick.AddListener(ChangePrompt);
@@ -73,7 +70,6 @@ public class PromptUIController : MonoBehaviourPunCallbacks
 
     private string GetAccountName(Player player)
     {
-        // プレイヤーのカスタムプロパティからアカウント名を取得する
         if (player.CustomProperties.ContainsKey("accountName"))
         {
             return player.CustomProperties["accountName"].ToString();

@@ -14,18 +14,11 @@ public class ActionUIController : FadeController
     [Header("Parent Objects")]
     public GameObject actionParent;
     public GameObject actionWaitingParent;
-    public GameObject revealParent;
-
-    private PromptUIController promptUIController;
-    private ChatGPTInteraction chatGPTInteraction;
-    private RevealUIController revealUIController;
+    
     private MainGameManager mainGameManager;
 
     void Start()
     {
-        promptUIController = GetComponent<PromptUIController>();
-        chatGPTInteraction = GetComponent<ChatGPTInteraction>();
-        revealUIController = GetComponent<RevealUIController>();
         mainGameManager = FindObjectOfType<MainGameManager>();
 
         submitActionButton.onClick.AddListener(SubmitAction);
