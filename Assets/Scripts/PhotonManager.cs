@@ -49,16 +49,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         if (isExistRoom) return;
 
-        if (isExistName && !isExistRoom)
-        {
-            Debug.LogError($"RoomId: { roomId }は存在しません");
-            errorImage.SetActive(true);
-            errorText.text = "ルームIDが存在しません。";
-
-            await UniTask.Delay(1000);
-            errorImage.SetActive(false);
-        } 
-        
         if (!isExistName)
         {
             Debug.LogError("ルームIDが入力されていません");
@@ -68,6 +58,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             await UniTask.Delay(1000);
             errorImage.SetActive(false);
         }
+    }
+
+    public override async void OnJoinRoomFailed (short returnCode, string roomId)
+    {
+            Debug.LogError($"RoomId: { roomId }は存在しません");
+            errorImage.SetActive(true);
+            errorText.text = "ルームIDが存在しません。";
+
+            await UniTask.Delay(1000);
+            errorImage.SetActive(false);
     }
 
     public override void OnJoinedRoom()
