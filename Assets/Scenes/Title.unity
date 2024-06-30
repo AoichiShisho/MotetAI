@@ -1729,6 +1729,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Delegates: []
   buttonText: {fileID: 0}
+--- !u!1 &939293469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 939293471}
+  - component: {fileID: 939293470}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &939293470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939293469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761a905890bb04c8291aa75b6024cdde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmClip: {fileID: 8300000, guid: b20d33c0651ae4b1a875897e2d99ad13, type: 3}
+  motetaClip: {fileID: 8300000, guid: c7686088cb3ea4b7ca4a2525a2f530f1, type: 3}
+  motenakattaClip: {fileID: 8300000, guid: 3c71aabf3ef86450f91662d053c6038f, type: 3}
+  buttonClip: {fileID: 8300000, guid: cc00f52d7ed1341adb8fc8848e612984, type: 3}
+--- !u!4 &939293471
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939293469}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &969305480
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,6 +2593,7 @@ GameObject:
   - component: {fileID: 1197119153}
   - component: {fileID: 1197119152}
   - component: {fileID: 1197119154}
+  - component: {fileID: 1197119155}
   m_Layer: 5
   m_Name: CreateBackButton
   m_TagString: Untagged
@@ -2666,6 +2715,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1197119155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197119150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d5130364126e47f4801a75e47fa7c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
+  buttonText: {fileID: 0}
 --- !u!1 &1310845248
 GameObject:
   m_ObjectHideFlags: 0
@@ -3448,6 +3511,7 @@ GameObject:
   - component: {fileID: 1707579943}
   - component: {fileID: 1707579942}
   - component: {fileID: 1707579944}
+  - component: {fileID: 1707579945}
   m_Layer: 5
   m_Name: ConfirmNameButton
   m_TagString: Untagged
@@ -3569,6 +3633,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1707579945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707579940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d5130364126e47f4801a75e47fa7c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
+  buttonText: {fileID: 0}
 --- !u!1 &1729221100
 GameObject:
   m_ObjectHideFlags: 0
@@ -4036,3 +4114,4 @@ SceneRoots:
   - {fileID: 256229545}
   - {fileID: 354775059}
   - {fileID: 1341999760}
+  - {fileID: 939293471}
