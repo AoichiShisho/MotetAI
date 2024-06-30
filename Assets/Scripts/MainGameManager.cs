@@ -4,8 +4,12 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using System.IO;
 using UnityEngine.SceneManagement;
+
+public static class PlayerSctionResultStore
+{
+    public static Dictionary<string, PlayerActionResult> shared = new();
+}
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
@@ -20,8 +24,6 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public GameObject actionParent;
     public GameObject actionWaitingParent;
     public Button nextResultButton;
-
-    private Dictionary<string, PlayerActionResult> playerActionResults = new();
     private int currentActionIndex = 0;
 
     void Start()
@@ -56,16 +58,16 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_SubmitAction(string playerName, string action)
     {
-        if (!playerActionResults.ContainsKey(playerName))
+        if (!PlayerSctionResultStore.shared.ContainsKey(playerName))
         {
-            playerActionResults[playerName] = new PlayerActionResult { Action = action, Result = "" };
+            PlayerSctionResultStore.shared[playerName] = new PlayerActionResult { Action = action, Result = "" };
         }
         CheckAllActionsSubmitted();
     }
 
     void CheckAllActionsSubmitted()
     {
-        if (playerActionResults.Count == PhotonNetwork.PlayerList.Length)
+        if (PlayerSctionResultStore.shared.Count == PhotonNetwork.PlayerList.Length)
         {
             photonView.RPC(nameof(HideActionWaitingParents), RpcTarget.All);
             photonView.RPC(nameof(DisplayNextAction), RpcTarget.All);
@@ -78,7 +80,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         if (currentActionIndex < PhotonNetwork.PlayerList.Length)
         {
             string playerName = PhotonNetwork.PlayerList[currentActionIndex].NickName;
-            string action = playerActionResults[playerName].Action;
+            string action = PlayerSctionResultStore.shared[playerName].Action;
             revealUIController.SetActionText(action);
             revealUIController.proceedButton.onClick.RemoveAllListeners();
             revealUIController.proceedButton.onClick.AddListener(OnProceedButtonClicked);
@@ -121,26 +123,32 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         photonView.RPC(nameof(HideRevealParent), RpcTarget.All);
 
         string playerName = PhotonNetwork.PlayerList[currentActionIndex].NickName;
-        string action = playerActionResults[playerName].Action;
+        string action = PlayerSctionResultStore.shared[playerName].Action;
         string prompt = promptUIController.GetCurrentPrompt();
         string fullPrompt = $"{prompt}\nプレイヤーの行動: {action}\n結果:";
 
         chatGPTInteraction.SendQuestion(fullPrompt, result => {
             string actionText = result.Replace("プレイヤー", playerName);
             string finalResult;
-
-            if (result.Contains("モテる！"))
+            
+            Debug.Log(result);
+            
+            
+            //FIXME: このresult判定のテキストうまく行ってない。
+            if (result.Contains("モテる"))
             {
                 finalResult = $"{playerName}はモテる！";
             }
-            else if (result.Contains("モテない..."))
+            else if (result.Contains("モテない"))
             {
                 finalResult = $"{playerName}はモテない...";
             }
             else
             {
-                finalResult = result;
+                finalResult = "判定不可";
             }
+
+            PlayerSctionResultStore.shared[playerName].Result = finalResult;
 
             photonView.RPC(nameof(DisplayResult), RpcTarget.All, actionText, finalResult);
         });
