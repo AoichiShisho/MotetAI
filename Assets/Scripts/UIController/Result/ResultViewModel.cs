@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ResultViewModel : MonoBehaviour
 {
@@ -19,5 +20,10 @@ public class ResultViewModel : MonoBehaviour
             TMP_Text listItem = Instantiate(playerResultTextPrefab, playerList.transform);
             listItem.text = $"{variable.Key} は {variable.Value.Result}";
         }
+    }
+
+    public void NavigateToLobby()
+    {
+        SceneManager.LoadScene("Lobby");
     }
 }
