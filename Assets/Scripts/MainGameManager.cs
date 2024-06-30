@@ -151,18 +151,20 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         string fullPrompt = $"{prompt}\nプレイヤーの行動: {action}\n結果:";
 
         chatGPTInteraction.SendQuestion(fullPrompt, result => {
-            string personalizedResult = result.Replace("プレイヤー", playerName);
+            string replacedNameInJpn = result.Replace("プレイヤー", playerName);
+            string replacedNameInEng = replacedNameInJpn.Replace("Player", playerName);
+            string finalReplace = replacedNameInEng.Replace("player", playerName);
+            
             string finalResult;
-            
-            Debug.Log(result);
-            
+
+            Debug.Log(finalReplace);
             
             //FIXME: このresult判定のテキストうまく行ってない。
-            if (result.Contains("モテる"))
+            if (finalReplace.Contains("モテる"))
             {
                 finalResult = "モテる！";
             }
-            else if (result.Contains("モテない"))
+            else if (finalReplace.Contains("モテない"))
             {
                 finalResult = "モテない...";
             }
@@ -171,7 +173,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                 finalResult = "判定不可";
             }
 
-            photonView.RPC(nameof(DisplayResult), RpcTarget.All, personalizedResult, finalResult);
+            photonView.RPC(nameof(DisplayResult), RpcTarget.All, finalReplace, finalResult);
 
             PlayerSctionResultStore.shared[playerName].Result = finalResult;
         });
