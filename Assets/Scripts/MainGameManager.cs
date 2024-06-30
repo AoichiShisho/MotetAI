@@ -174,8 +174,6 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             photonView.RPC(nameof(DisplayResult), RpcTarget.All, personalizedResult, finalResult);
 
             PlayerSctionResultStore.shared[playerName].Result = finalResult;
-
-            photonView.RPC(nameof(DisplayResult), RpcTarget.All, actionText, finalResult);
         });
     }
 
