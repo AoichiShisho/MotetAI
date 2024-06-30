@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
@@ -174,6 +175,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         else
         {
             Debug.Log("All actions have been displayed.");
+            SceneManager.LoadScene("Result");
             currentActionIndex = 0; // リセット
         }
     }
