@@ -5,15 +5,10 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
-    public class PlayerActionResult
-    {
-        public string Action { get; set; }
-        public string Result { get; set; }
-    }
-
     public PromptUIController promptUIController;
     public ActionUIController actionUIController;
     public RevealUIController revealUIController;
@@ -26,7 +21,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public GameObject actionWaitingParent;
     public Button nextResultButton;
 
-    private Dictionary<string, PlayerActionResult> playerActionResults = new Dictionary<string, PlayerActionResult>();
+    private Dictionary<string, PlayerActionResult> playerActionResults = new();
     private int currentActionIndex = 0;
 
     void Start()
@@ -174,6 +169,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         else
         {
             Debug.Log("All actions have been displayed.");
+            SceneManager.LoadScene("Result");
             currentActionIndex = 0; // リセット
         }
     }
@@ -190,4 +186,10 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         actionParent.SetActive(true);
         actionUIController.SetPrompt(prompt);
     }
+}
+
+public class PlayerActionResult
+{
+    public string Action { get; set; }
+    public string Result { get; set; }
 }
