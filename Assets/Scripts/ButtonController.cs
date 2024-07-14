@@ -4,22 +4,22 @@ using TMPro;
 
 public class ButtonController : EventTrigger
 {
-    public TextMeshProUGUI buttonText;
+    public Transform buttonTextTransform;
 
     void Start()
     {
-        buttonText = GetComponentInChildren<TextMeshProUGUI>();
+        buttonTextTransform = GetComponentInChildren<Transform>();
     }
 
     public override void OnPointerDown(PointerEventData data)
     {
-        buttonText.transform.position += new Vector3(0.5f, -0.5f, 0);
+        buttonTextTransform.transform.position += new Vector3(0.5f, -0.5f, 0);
         PlayButtonSound();
     }
 
     public override void OnPointerUp(PointerEventData data)
     {
-        buttonText.transform.position -= new Vector3(0.5f, -0.5f, 0);
+        buttonTextTransform.transform.position -= new Vector3(0.5f, -0.5f, 0);
     }
 
     void PlayButtonSound()
