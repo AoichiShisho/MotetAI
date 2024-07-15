@@ -4,22 +4,23 @@ using TMPro;
 
 public class ButtonController : EventTrigger
 {
-    public Transform buttonTextTransform;
-
-    void Start()
-    {
-        buttonTextTransform = GetComponentInChildren<Transform>();
-    }
-
     public override void OnPointerDown(PointerEventData data)
     {
-        buttonTextTransform.transform.position += new Vector3(0.5f, -0.5f, 0);
+        foreach (Transform child in GetComponentInChildren<Transform>())
+        {
+            if (child.gameObject != gameObject)
+                child.transform.position += new Vector3(0.5f, -0.5f, 0);
+        }
         PlayButtonSound();
     }
 
     public override void OnPointerUp(PointerEventData data)
     {
-        buttonTextTransform.transform.position -= new Vector3(0.5f, -0.5f, 0);
+        foreach (Transform child in GetComponentInChildren<Transform>())
+        {
+            if (child.gameObject != gameObject)
+                child.transform.position -= new Vector3(0.5f, -0.5f, 0);
+        }
     }
 
     void PlayButtonSound()
