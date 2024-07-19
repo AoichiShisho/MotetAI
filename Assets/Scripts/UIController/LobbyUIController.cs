@@ -11,6 +11,14 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
     public TMP_Text lobbyIDText;
     public Button startGameButton;
 
+    public ScreenTransition screenTransition;
+
+    void Awake()
+    {
+        screenTransition.SetInitialCenterPosition();
+        screenTransition.ExitTransition();
+    }
+    
     void Start()
     {
         UpdatePlayerList();

@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 [Serializable]
 public enum LobbyUIState {
@@ -21,12 +20,14 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
     [SerializeField] private TMP_InputField roomIdInputField;
     [SerializeField] private TMP_Text textAmount;
     [SerializeField] private PhotonManager photonManager;
+    [SerializeField] private ScreenTransition screenTransition;
     private JoinMode joinMode = JoinMode.EMPTY;
 
     protected override void Start()
     {
         base.Start();
         nameInputField.onValueChanged.AddListener(UpdateTextAmount);
+        screenTransition.SetInitialLeftPosition();
     }
 
     public void OnLobbySelectButtonClicked()
@@ -82,15 +83,21 @@ public sealed class LobbyViewModel : CanvasManager<LobbyUIState> {
         string playerName = nameInputField.text;
         //if (string.IsNullOrEmpty(playerName)) return;
 
-        photonManager.SetPlayerName(playerName);
-        photonManager.OnCreateLobbyButtonClicked(playerName);
+        screenTransition.EnterTransition(() =>
+        {
+            photonManager.SetPlayerName(playerName);
+            photonManager.OnCreateLobbyButtonClicked(playerName);
+        });
     }
 
     public void ConfirmJoinLobby()
     {
         string roomId = roomIdInputField.text;
 
-        photonManager.OnJoinButtonClicked(roomId);
+        screenTransition.EnterTransition(() =>
+        {
+            photonManager.OnJoinButtonClicked(roomId);
+        });
     }
 
     void UpdateTextAmount(string text)

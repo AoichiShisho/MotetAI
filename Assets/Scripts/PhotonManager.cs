@@ -10,10 +10,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] private string lobbySceneName = "Lobby";
     [SerializeField] private ErrorController errorController;
     [SerializeField] private TextMeshProUGUI errorText;
+    
+    private string pendingRoomName;
+    private System.Action pendingAction;
 
     void Awake()
     {
-        PhotonNetwork.ConnectUsingSettings();    
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     public async void SetPlayerName(string playerName)
@@ -36,8 +39,26 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         if (!string.IsNullOrEmpty(playerName))
         {
-            string roomName = GenerateUniqueRoomID();
-            PhotonNetwork.CreateRoom(roomName, new RoomOptions());
+            pendingRoomName = GenerateUniqueRoomID();
+            pendingAction = TryCreateRoom;
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                pendingAction.Invoke();
+            }
+        }
+    }
+
+    private void TryCreateRoom()
+    {
+        if (PhotonNetwork.IsConnectedAndReady)
+        {
+            PhotonNetwork.CreateRoom(pendingRoomName, new RoomOptions());
+            pendingRoomName = null;
+            pendingAction = null;
+        }
+        else
+        {
+            Debug.LogError("Photon is not connected and ready.");
         }
     }
 
@@ -58,7 +79,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public override async void OnJoinRoomFailed (short returnCode, string roomId)
+    public override async void OnJoinRoomFailed(short returnCode, string roomId)
     {
         Debug.LogError($"RoomId: { roomId }は存在しません");
         errorText.text = "ルームIDが存在しません。";
@@ -81,14 +102,21 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(lobbySceneName);
     }
 
+    public override void OnConnectedToMaster()
+    {
+        base.OnConnectedToMaster();
+        Debug.Log("Connected to Master");
+        pendingAction?.Invoke();
+    }
+
     private string GenerateUniqueRoomID()
     {
         string roomId;
-        do {
+        do
+        {
             roomId = Random.Range(1000, 9999).ToString();
-        }
-        while (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.Name == roomId);
-    
+        } while (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.Name == roomId);
+
         return roomId;
     }
 
