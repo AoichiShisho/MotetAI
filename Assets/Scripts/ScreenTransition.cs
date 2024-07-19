@@ -1,0 +1,77 @@
+using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
+
+public class ScreenTransition : MonoBehaviour
+{
+    [SerializeField] private float duration;
+    [SerializeField] private float waitTime;
+
+    private RectTransform rectTransform;
+    private float initialPositionX;
+    private Vector2 initialPosition;
+
+    private void Start()
+    {
+        InitializeRectTransform();
+    }
+
+    private void InitializeRectTransform()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        if (rectTransform == null)
+        {
+            Debug.LogError("RectTransform component is not found.");
+        }
+    }
+
+    private void EnsureRectTransformInitialized()
+    {
+        if (rectTransform == null)
+        {
+            InitializeRectTransform();
+        }
+    }
+
+    public void SetInitialLeftPosition()
+    {
+        EnsureRectTransformInitialized();
+        initialPositionX = -rectTransform.rect.width / 2;
+        rectTransform.anchoredPosition = new Vector2(initialPositionX, 0);
+    }
+
+    public void SetInitialCenterPosition()
+    {
+        EnsureRectTransformInitialized();
+        initialPosition = new Vector2(rectTransform.rect.width/2 - 100, 0);
+        rectTransform.anchoredPosition = initialPosition;
+    }
+
+    public void EnterTransition(System.Action onComplete)
+    {
+        EnsureRectTransformInitialized();
+        Sequence mySequence = DOTween.Sequence();
+
+        // 左から中央へ
+        mySequence.Append(rectTransform.DOAnchorPosX(rectTransform.rect.width / 2 - 100, duration).SetEase(Ease.InOutQuad));
+        // 中央で待機
+        mySequence.AppendInterval(waitTime);
+        // トランジション完了後にコールバックを実行
+        mySequence.OnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
+
+        mySequence.Play();
+    }
+
+    public void ExitTransition()
+    {
+        EnsureRectTransformInitialized();
+        Sequence mySequence = DOTween.Sequence();
+        // 中央から右へ
+        mySequence.Append(rectTransform.DOAnchorPosX(rectTransform.rect.width * 3/2 - 100, duration).SetEase(Ease.InOutQuad));
+
+        mySequence.Play();
+    }
+}
