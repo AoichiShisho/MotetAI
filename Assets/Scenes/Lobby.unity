@@ -1253,7 +1253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MasterParent: {fileID: 427760398}
-  GuestParent: {fileID: 755199694}
+  PlayerParent: {fileID: 755199694}
 --- !u!1 &1815358985
 GameObject:
   m_ObjectHideFlags: 0
