@@ -10,6 +10,7 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
     public GameObject playerListItemPrefab;
     public TMP_Text lobbyIDText;
     public Button startGameButton;
+    public Button exitLobbyButton;
 
     public ScreenTransition screenTransition;
 
@@ -24,6 +25,7 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
         UpdatePlayerList();
         UpdateLobbyID();
         startGameButton.onClick.AddListener(OnStartGameButtonClicked);
+        exitLobbyButton.onClick.AddListener(OnExitLobbyButtonClicked);
     }
 
     void UpdateLobbyID()
@@ -72,6 +74,11 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
         {
             Debug.Log("ゲームマスターじゃないと始められません");
         }
+    }
+
+    void OnExitLobbyButtonClicked()
+    {
+        PhotonNetwork.LoadLevel("Title");
     }
 
     [PunRPC]
