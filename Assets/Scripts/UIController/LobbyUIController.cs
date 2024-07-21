@@ -78,6 +78,7 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
 
     void OnExitLobbyButtonClicked()
     {
+        PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel("Title");
     }
 
