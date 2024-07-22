@@ -210,7 +210,7 @@ namespace Photon.Realtime
 
             if (this.LogTrafficStats)
             {
-                Debug.Log(string.Format("{0} SupportLogger {1} Ping min/max: {2}/{3}", this.GetFormattedTimestamp() , this.client.LoadBalancingPeer.VitalStatsToString(false) , this.pingMin , this.pingMax));
+                // Debug.Log(string.Format("{0} SupportLogger {1} Ping min/max: {2}/{3}", this.GetFormattedTimestamp() , this.client.LoadBalancingPeer.VitalStatsToString(false) , this.pingMin , this.pingMax));
             }
         }
 
