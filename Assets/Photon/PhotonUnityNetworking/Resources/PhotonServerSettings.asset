@@ -52,6 +52,13 @@ MonoBehaviour:
   - HideActionWaitingParent
   - HideActionWaitingParents
   - HandlePlayerLeft
+  - AddProceedButtonListener
+  - LoadResultScene
+  - LogPlayerActions
+  - RemoveProceedButtonListeners
+  - SyncPlayerActions
+  - UpdatePlayerActionStore
+  - UpdateAllClients
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

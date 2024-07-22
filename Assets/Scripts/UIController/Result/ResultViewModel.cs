@@ -15,7 +15,7 @@ public class ResultViewModel : MonoBehaviour
     
     private void ShowPlayerList()
     {
-        foreach (var variable in PlayerSctionResultStore.shared)
+        foreach (var variable in PlayerActionResultStore.shared)
         {
             TMP_Text listItem = Instantiate(playerResultTextPrefab, playerList.transform);
             listItem.text = $"{variable.Key} は {variable.Value.Result}";
