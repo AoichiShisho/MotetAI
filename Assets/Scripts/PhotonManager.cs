@@ -19,20 +19,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
-    public async void SetPlayerName(string playerName)
+    public void SetPlayerName(string playerName)
     {
-        if (!string.IsNullOrEmpty(playerName))
-        {
             PhotonNetwork.NickName = playerName;
-        }
-        else 
-        {
-            Debug.LogError("名前がない");
-            errorText.text = "名前を入力してください。";
-            errorController.ShowError();
+    }
 
-            await UniTask.Delay(1000);
-        }
+    public async void PlayerNameError()
+    {
+        Debug.LogError("名前がない");
+        errorText.text = "名前を入力してください。";
+        errorController.ShowError();
+
+        await UniTask.Delay(1000);
     }
 
     public void OnCreateLobbyButtonClicked(string playerName)
@@ -62,21 +60,20 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public async void OnJoinButtonClicked(string roomId)
+    public bool CheckRoomId(string roomId)
     {
-        bool isExistName = !string.IsNullOrEmpty(roomId);
-        bool isExistRoom = PhotonNetwork.JoinRoom(roomId);
+        bool isExistRoom = !PhotonNetwork.JoinRoom(roomId);
 
-        if (isExistRoom) return;
+        return isExistRoom;
+    }
 
-        if (!isExistName)
-        {
-            Debug.LogError("ルームIDが入力されていません");
-            errorText.text = "ルームIDを入力してください。";
-            errorController.ShowError();
+    public async void RoomIdError()
+    {
+        Debug.LogError("ルームIDが入力されていません");
+        errorText.text = "ルームIDを入力してください。";
+        errorController.ShowError();
 
-            await UniTask.Delay(1000);
-        }
+        await UniTask.Delay(1000);
     }
 
     public override async void OnJoinRoomFailed(short returnCode, string roomId)

@@ -40,13 +40,18 @@ public sealed class TitleViewModel : CanvasManager<TitleUIState> {
         SetUIState(TitleUIState.INPUT_NAME);
     }
 
+    // ID入力してルームに入る時
     public void NavigateInputIdUI()
     {
         string playerName = nameInputField.text;
-        photonManager.SetPlayerName(playerName);
 
-        if (!string.IsNullOrEmpty(playerName))
+        if (string.IsNullOrEmpty(playerName))
         {
+            photonManager.PlayerNameError();
+        }
+        else
+        {
+            photonManager.SetPlayerName(playerName);
             SetUIState(TitleUIState.INPUT_ID);
         }
     }
@@ -78,26 +83,44 @@ public sealed class TitleViewModel : CanvasManager<TitleUIState> {
         }
     }
 
+    // ルームを作成して入る時
     void ConfirmCreateLobby()
     {
         string playerName = nameInputField.text;
-        //if (string.IsNullOrEmpty(playerName)) return;
 
-        screenTransition.EnterTransition(() =>
+        if (string.IsNullOrEmpty(playerName))
         {
+            photonManager.PlayerNameError();
+        }
+        else
+        {
+            screenTransition.EnterTransition();
             photonManager.SetPlayerName(playerName);
             photonManager.OnCreateLobbyButtonClicked(playerName);
-        });
+        }
     }
 
     public void ConfirmJoinLobby()
     {
         string roomId = roomIdInputField.text;
 
-        screenTransition.EnterTransition(() =>
+        if (string.IsNullOrEmpty(roomId))
         {
-            photonManager.OnJoinButtonClicked(roomId);
-        });
+            photonManager.RoomIdError();
+        }
+        else
+        {
+            bool exist = photonManager.CheckRoomId(roomId);
+
+            if (exist)
+            {
+                screenTransition.EnterTransition();
+            }
+            else
+            {
+                return;
+            }
+        }
     }
 
     void UpdateTextAmount(string text)

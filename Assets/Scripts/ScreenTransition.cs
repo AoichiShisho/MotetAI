@@ -47,7 +47,7 @@ public class ScreenTransition : MonoBehaviour
         rectTransform.anchoredPosition = initialPosition;
     }
 
-    public void EnterTransition(System.Action onComplete)
+    public void EnterTransition()
     {
         EnsureRectTransformInitialized();
         Sequence mySequence = DOTween.Sequence();
@@ -56,11 +56,6 @@ public class ScreenTransition : MonoBehaviour
         mySequence.Append(rectTransform.DOAnchorPosX(rectTransform.rect.width / 2 - 100, duration).SetEase(Ease.InOutQuad));
         // 中央で待機
         mySequence.AppendInterval(waitTime);
-        // トランジション完了後にコールバックを実行
-        mySequence.OnComplete(() =>
-        {
-            onComplete?.Invoke();
-        });
 
         mySequence.Play();
     }
