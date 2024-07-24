@@ -59,6 +59,9 @@ MonoBehaviour:
   - SyncPlayerActions
   - UpdatePlayerActionStore
   - UpdateAllClients
+  - OnNextResultButtonClicked
+  - RPC_OnNextResultButtonClicked
+  - UpdatePlayerResult
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

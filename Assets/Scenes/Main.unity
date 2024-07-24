@@ -630,7 +630,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4284111450
   m_fontColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -3647,10 +3647,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fefdece055f0434cb04550bc8551f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  titleText: {fileID: 2081404658}
   actionText: {fileID: 423191331}
   proceedButton: {fileID: 1638577778}
   revealParent: {fileID: 458570305}
-  answerParent: {fileID: 20749811}
 --- !u!114 &1193883815
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -135,7 +135,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         {
             string playerName = PhotonNetwork.PlayerList[currentActionIndex].NickName;
             string action = PlayerActionResultStore.shared[playerName].Action;
-            revealUIController.SetActionText(action);
+            revealUIController.SetActionText(action, playerName);
             revealUIController.proceedButton.onClick.RemoveAllListeners();
             revealUIController.proceedButton.onClick.AddListener(OnProceedButtonClicked);
             photonView.RPC(nameof(ShowRevealParent), RpcTarget.All);
@@ -204,9 +204,17 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             }
 
             photonView.RPC(nameof(DisplayResult), RpcTarget.All, finalReplace, finalResult);
-
-            PlayerActionResultStore.shared[playerName].Result = finalResult;
+            photonView.RPC(nameof(UpdatePlayerResult), RpcTarget.All, playerName, finalResult);
         });
+    }
+    
+    [PunRPC]
+    void UpdatePlayerResult(string playerName, string result)
+    {
+        if (PlayerActionResultStore.shared.ContainsKey(playerName))
+        {
+            PlayerActionResultStore.shared[playerName].Result = result;
+        }
     }
 
     [PunRPC]
@@ -241,9 +249,15 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         else
         {
             Debug.Log("All actions have been displayed.");
-            SceneManager.LoadScene("Result");
+            photonView.RPC(nameof(LoadResultScene), RpcTarget.All);
             currentActionIndex = 0; // リセット
         }
+    }
+
+    [PunRPC]
+    void LoadResultScene()
+    {
+        SceneManager.LoadScene("Result");
     }
 
     public void NotifyOtherPlayersRPC(string playerName, string prompt)
