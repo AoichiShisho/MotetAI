@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,10 +7,12 @@ public class ResultViewModel : MonoBehaviour
 {
     [SerializeField] private GameObject playerList;
     [SerializeField] private TMP_Text playerResultTextPrefab;
+    [SerializeField] private ScreenTransition screenTransition;
     
     private void Start()
     {
         ShowPlayerList();
+        screenTransition.SetInitialLeftPosition();
     }
     
     private void ShowPlayerList()
@@ -23,6 +25,11 @@ public class ResultViewModel : MonoBehaviour
     }
 
     public void NavigateToLobby()
+    {
+        screenTransition.EnterTransition().OnComplete(LoadLobbyScene);
+    }
+
+    private void LoadLobbyScene()
     {
         SceneManager.LoadScene("Lobby");
     }

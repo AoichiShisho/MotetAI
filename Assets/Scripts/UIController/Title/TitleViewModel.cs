@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 [Serializable]
 public enum TitleUIState {
@@ -94,9 +95,10 @@ public sealed class TitleViewModel : CanvasManager<TitleUIState> {
         }
         else
         {
-            screenTransition.EnterTransition();
-            photonManager.SetPlayerName(playerName);
-            photonManager.OnCreateLobbyButtonClicked(playerName);
+            screenTransition.EnterTransition().OnComplete(() => {
+                photonManager.SetPlayerName(playerName);
+                photonManager.OnCreateLobbyButtonClicked(playerName);
+            });
         }
     }
 
