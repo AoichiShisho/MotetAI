@@ -4,8 +4,8 @@ using DG.Tweening;
 
 public class ScreenTransition : MonoBehaviour
 {
-    [SerializeField] private float duration;
-    [SerializeField] private float waitTime;
+    public float duration;
+    public float waitTime;
 
     private RectTransform rectTransform;
     private float initialPositionX;
@@ -47,7 +47,7 @@ public class ScreenTransition : MonoBehaviour
         rectTransform.anchoredPosition = initialPosition;
     }
 
-    public void EnterTransition()
+    public Sequence EnterTransition()
     {
         EnsureRectTransformInitialized();
         Sequence mySequence = DOTween.Sequence();
@@ -58,6 +58,7 @@ public class ScreenTransition : MonoBehaviour
         mySequence.AppendInterval(waitTime);
 
         mySequence.Play();
+        return mySequence;
     }
 
     public void ExitTransition()
