@@ -9,6 +9,11 @@ using UnityEngine.SceneManagement;
 public static class PlayerActionResultStore
 {
     public static Dictionary<string, PlayerActionResult> shared = new();
+
+    public static void Clear()
+    {
+        shared.Clear();
+    }
 }
 
 public class MainGameManager : MonoBehaviourPunCallbacks
@@ -67,6 +72,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     void ReturnToTitle()
     {
+        PlayerActionResultStore.Clear();
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel("Title");
     }

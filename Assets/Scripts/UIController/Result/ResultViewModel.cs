@@ -26,7 +26,11 @@ public class ResultViewModel : MonoBehaviour
 
     public void NavigateToLobby()
     {
-        screenTransition.EnterTransition().OnComplete(LoadLobbyScene);
+        screenTransition.EnterTransition().OnComplete(() =>
+        {
+            PlayerActionResultStore.Clear();
+            LoadLobbyScene();
+        });
     }
 
     private void LoadLobbyScene()
