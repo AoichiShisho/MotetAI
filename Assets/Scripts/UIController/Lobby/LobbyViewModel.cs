@@ -1,6 +1,4 @@
-using System;
 using Photon.Pun;
-using TMPro;
 using UnityEngine;
 
 public class LobbyViewModel : MonoBehaviourPunCallbacks

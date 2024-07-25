@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
-using Photon.Pun.Demo.PunBasics;
 
 public class PromptUIController : MonoBehaviourPunCallbacks
 {
