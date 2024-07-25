@@ -9,6 +9,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip motetaClip;
     [SerializeField] private AudioClip motenakattaClip;
     [SerializeField] private AudioClip buttonClip;
+    [SerializeField] private AudioClip enterClip;
+    [SerializeField] private AudioClip leaveClip;
 
     private AudioSource bgmAudioSource;
     private AudioSource sfxAudioSource;
@@ -72,6 +74,16 @@ public class SoundManager : MonoBehaviour
     public void PlayButtonSound()
     {
         sfxAudioSource.PlayOneShot(buttonClip);
+    }
+
+    public void PlayEnterSound()
+    {
+        sfxAudioSource.PlayOneShot(enterClip);
+    }
+
+    public void PlayLeaveSound()
+    {
+        sfxAudioSource.PlayOneShot(leaveClip);
     }
 
     void OnDestroy()
