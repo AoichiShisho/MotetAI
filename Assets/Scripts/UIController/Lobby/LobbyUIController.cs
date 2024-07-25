@@ -52,6 +52,7 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
     {
         GameObject listItem = Instantiate(playerListItemPrefab, playerListParent.transform);
         listItem.GetComponentInChildren<TMP_Text>().text = $"{player.NickName}";
+        listItem.GetComponent<PlayerListItemAnimator>().AnimateIn();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
