@@ -57,11 +57,13 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         AddPlayerToList(newPlayer);
+        SoundManager.Instance.PlayEnterSound();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UpdatePlayerList();
+        SoundManager.Instance.PlayLeaveSound();
     }
 
     void OnStartGameButtonClicked()

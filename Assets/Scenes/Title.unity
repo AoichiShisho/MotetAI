@@ -1778,6 +1778,8 @@ MonoBehaviour:
   motetaClip: {fileID: 8300000, guid: c7686088cb3ea4b7ca4a2525a2f530f1, type: 3}
   motenakattaClip: {fileID: 8300000, guid: 3c71aabf3ef86450f91662d053c6038f, type: 3}
   buttonClip: {fileID: 8300000, guid: cc00f52d7ed1341adb8fc8848e612984, type: 3}
+  enterClip: {fileID: 8300000, guid: 44dd8f310a58b42b3a5aceef69e3956e, type: 3}
+  leaveClip: {fileID: 8300000, guid: d953242ae4ac04ae1acd997df64f7b83, type: 3}
 --- !u!4 &939293471
 Transform:
   m_ObjectHideFlags: 0
