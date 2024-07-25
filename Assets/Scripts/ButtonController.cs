@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro;
 
 public class ButtonController : EventTrigger
 {
