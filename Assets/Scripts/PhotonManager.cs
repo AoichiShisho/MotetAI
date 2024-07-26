@@ -59,11 +59,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public bool CheckRoomId(string roomId)
+    public void JoinRoom(string roomId)
     {
-        bool isExistRoom = !PhotonNetwork.JoinRoom(roomId);
-
-        return isExistRoom;
+        if (PhotonNetwork.IsConnectedAndReady)
+        {
+            PhotonNetwork.JoinRoom(roomId);
+        }
+        else
+        {
+            Debug.LogError("Photon is not connected and ready.");
+        }
     }
 
     public async void RoomIdError()
