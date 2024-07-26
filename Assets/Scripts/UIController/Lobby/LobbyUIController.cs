@@ -52,6 +52,10 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
     {
         GameObject listItem = Instantiate(playerListItemPrefab, playerListParent.transform);
         listItem.GetComponentInChildren<TMP_Text>().text = $"{player.NickName}";
+        
+        Image masterBadge = listItem.transform.Find("MasterBadge").GetComponent<Image>();
+        masterBadge.gameObject.SetActive(player.IsMasterClient);
+        
         listItem.GetComponent<PlayerListItemAnimator>().AnimateIn();
     }
 
@@ -65,6 +69,11 @@ public class LobbyUIController : MonoBehaviourPunCallbacks
     {
         UpdatePlayerList();
         SoundManager.Instance.PlayLeaveSound();
+    }
+    
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        UpdatePlayerList();
     }
 
     void OnStartGameButtonClicked()
