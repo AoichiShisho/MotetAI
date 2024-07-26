@@ -20,7 +20,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public void SetPlayerName(string playerName)
     {
-            PhotonNetwork.NickName = playerName;
+        PhotonNetwork.NickName = playerName;
     }
 
     public async void PlayerNameError()
