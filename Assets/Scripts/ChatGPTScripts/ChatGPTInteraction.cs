@@ -14,9 +14,13 @@ public class ChatGPTInteraction : MonoBehaviour
 
     [SerializeField] private AnswerUIController answerUIController;
 
-    void Start() {
+    void Start()
+    {
         Client = new Client();
-        answerUIController = GetComponent<AnswerUIController>();
+        if (answerUIController == null)
+        {
+            answerUIController = GetComponent<AnswerUIController>();
+        }
 
         loadStatus.RegisterAction(LoadingStatus.InProgress, () => {
             Debug.Log("通信を開始します。");
@@ -27,7 +31,20 @@ public class ChatGPTInteraction : MonoBehaviour
         });
     }
 
-    public async void SendQuestion(string prompt, System.Action<string> callback) {
+    public async void SendQuestion(string prompt, System.Action<string> callback)
+    {
+        if (Client == null)
+        {
+            Debug.LogError("Client is not initialized.");
+            return;
+        }
+
+        if (loadStatus == null)
+        {
+            Debug.LogError("LoadStatus is not initialized.");
+            return;
+        }
+
         loadStatus.ExecuteAction(LoadingStatus.InProgress);
         var response = await Client.RequestAsync(prompt);
 
@@ -37,13 +54,15 @@ public class ChatGPTInteraction : MonoBehaviour
         // 関心タグを抽出
         var interestMatch = Regex.Match(responseContent, InterestTagPattern);
         int interestLevel = -1; // 関心レベルの初期値を無効値に
-        if (interestMatch.Success) {
+        if (interestMatch.Success)
+        {
             interestLevel = int.Parse(interestMatch.Groups[1].Value);
             Debug.Log($"関心レベル: {interestLevel}");
         }
 
         // 関心レベルが0の場合、返答を括弧で囲む(読み上げしない)
-        if (interestLevel == 0) {
+        if (interestLevel == 0)
+        {
             responseContent = $"({responseContent})";
         }
 
@@ -52,18 +71,24 @@ public class ChatGPTInteraction : MonoBehaviour
         callback(cleanedResponse);
     }
 
-    private string ExtractAndLogFaceTags(string input, int interestLevel) {
+    private string ExtractAndLogFaceTags(string input, int interestLevel)
+    {
         var matches = Regex.Matches(input, FaceTagPattern);
         var uniqueTags = new HashSet<string>();
 
-        foreach (Match match in matches) {
-            if (uniqueTags.Add(match.Value)) {
+        foreach (Match match in matches)
+        {
+            if (uniqueTags.Add(match.Value))
+            {
                 Debug.Log("表情タグ全部: " + match.Value);
                 string emotionTag = match.Groups[1].Value;
                 string emotionIntensityString = match.Groups[2].Value;
-                if (int.TryParse(emotionIntensityString, out int emotionIntensity)) {
+                if (int.TryParse(emotionIntensityString, out int emotionIntensity))
+                {
                     Debug.Log($"表情: {emotionTag}, 強度: {emotionIntensity}");
-                } else {
+                }
+                else
+                {
                     Debug.LogWarning($"表情の強度 '{emotionIntensityString}' を整数に変換できませんでした。");
                 }
             }
@@ -74,15 +99,5 @@ public class ChatGPTInteraction : MonoBehaviour
 
         Debug.Log("ChatGPTの返答（表情タグ除去）: " + cleanedInput);
         return cleanedInput;
-    }
-
-    public void RegisterAction(LoadingStatus status, Action action)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ExecuteAction(LoadingStatus status)
-    {
-        throw new NotImplementedException();
     }
 }

@@ -5,7 +5,19 @@ class ConfigLoader
 {
     public static Config Load()
     {
-        string json = File.ReadAllText("Assets/Plugins/ChatGPT/Configs/config.json");
-        return JsonUtility.FromJson<Config>(json);
+        TextAsset configText = Resources.Load<TextAsset>("Configs/config");
+        return JsonUtility.FromJson<Config>(configText.text);
     }
 }
+
+// using UnityEngine;
+//
+// class ConfigLoader
+// {
+//     public static Config Load()
+//     {
+//         string path = Path.Combine(Application.streamingAssetsPath, "Configs/config.json");
+//         string json = File.ReadAllText(path);
+//         return JsonUtility.FromJson<Config>(json);
+//     }
+// }
