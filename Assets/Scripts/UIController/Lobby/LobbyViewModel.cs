@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class LobbyViewModel : MonoBehaviourPunCallbacks
@@ -8,7 +9,18 @@ public class LobbyViewModel : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        MasterParent.SetActive(PhotonNetwork.IsMasterClient);
-        GuestParent.SetActive(!PhotonNetwork.IsMasterClient);
+        UpdateUI();
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        UpdateUI();
+    }
+
+    void UpdateUI()
+    {
+        bool isMaster = PhotonNetwork.IsMasterClient;
+        MasterParent.SetActive(isMaster);
+        GuestParent.SetActive(!isMaster);
     }
 }
