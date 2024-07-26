@@ -5,6 +5,7 @@ class TextLoader
 {
     public static string Load()
     {
-        return File.ReadAllText("Assets/Plugins/ChatGPT/Configs/init_prompt.txt");
+        TextAsset promptText = Resources.Load<TextAsset>("Configs/init_prompt");
+        return promptText.text;
     }
 }
