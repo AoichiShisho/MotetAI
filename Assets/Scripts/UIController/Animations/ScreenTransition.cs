@@ -51,6 +51,8 @@ public class ScreenTransition : MonoBehaviour
         EnsureRectTransformInitialized();
         Sequence mySequence = DOTween.Sequence();
 
+        SoundManager.Instance.PlayTransitionEnterSound();
+
         // 左から中央へ
         mySequence.Append(rectTransform.DOAnchorPosX(rectTransform.rect.width / 2 - 100, duration).SetEase(Ease.InOutQuad));
         // 中央で待機
@@ -64,6 +66,9 @@ public class ScreenTransition : MonoBehaviour
     {
         EnsureRectTransformInitialized();
         Sequence mySequence = DOTween.Sequence();
+        
+        SoundManager.Instance.PlayTransitionExitSound();
+        
         // 中央から右へ
         mySequence.Append(rectTransform.DOAnchorPosX(rectTransform.rect.width * 3/2 - 100, duration).SetEase(Ease.InOutQuad));
 

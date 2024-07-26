@@ -11,6 +11,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip buttonClip;
     [SerializeField] private AudioClip enterClip;
     [SerializeField] private AudioClip leaveClip;
+    [SerializeField] private AudioClip transitionEnter;
+    [SerializeField] private AudioClip transitionExit;
 
     private AudioSource bgmAudioSource;
     private AudioSource sfxAudioSource;
@@ -84,6 +86,16 @@ public class SoundManager : MonoBehaviour
     public void PlayLeaveSound()
     {
         sfxAudioSource.PlayOneShot(leaveClip);
+    }
+    
+    public void PlayTransitionEnterSound()
+    {
+        sfxAudioSource.PlayOneShot(transitionEnter);
+    }
+    
+    public void PlayTransitionExitSound()
+    {
+        sfxAudioSource.PlayOneShot(transitionExit);
     }
 
     void OnDestroy()

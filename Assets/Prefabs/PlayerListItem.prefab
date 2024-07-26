@@ -102,6 +102,10 @@ PrefabInstance:
       value: UsernameTextTemp
       objectReference: {fileID: 0}
     - target: {fileID: 3460811741907349979, guid: 96efa766681544e22983524a01252528, type: 3}
+      propertyPath: m_text
+      value: Error
+      objectReference: {fileID: 0}
+    - target: {fileID: 3460811741907349979, guid: 96efa766681544e22983524a01252528, type: 3}
       propertyPath: m_VerticalAlignment
       value: 1024
       objectReference: {fileID: 0}
