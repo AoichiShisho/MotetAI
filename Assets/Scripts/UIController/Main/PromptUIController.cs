@@ -112,13 +112,15 @@ public class PromptUIController : MonoBehaviourPunCallbacks
     {
         if (!isEditing)
         {
-            promptText.gameObject.SetActive(false);
-            inputField.text = promptText.text;
             inputField.gameObject.SetActive(true);
             confirmChangeButton.gameObject.SetActive(true);
+            
+            promptText.gameObject.SetActive(false);
             changePromptButton.gameObject.SetActive(false);
-            editButton.gameObject.SetActive(false);
             confirmPromptButton.gameObject.SetActive(false);
+            editButton.gameObject.SetActive(false);
+            
+            inputField.text = promptText.text;
             isEditing = true;
         }
     }
@@ -127,14 +129,16 @@ public class PromptUIController : MonoBehaviourPunCallbacks
     {
         if (isEditing)
         {
-            promptText.text = inputField.text;
-            prompts[currentPromptIndex] = inputField.text;
-            inputField.gameObject.SetActive(false);
-            confirmChangeButton.gameObject.SetActive(false);
             changePromptButton.gameObject.SetActive(true);
             editButton.gameObject.SetActive(true);
             promptText.gameObject.SetActive(true);
             confirmPromptButton.gameObject.SetActive(true);
+            
+            inputField.gameObject.SetActive(false);
+            confirmChangeButton.gameObject.SetActive(false);
+            
+            prompts[currentPromptIndex] = inputField.text;
+            promptText.text = prompts[currentPromptIndex];
             isEditing = false;
         }
     }
