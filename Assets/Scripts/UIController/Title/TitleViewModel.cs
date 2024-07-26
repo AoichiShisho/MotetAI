@@ -112,16 +112,10 @@ public sealed class TitleViewModel : CanvasManager<TitleUIState> {
         }
         else
         {
-            bool exist = photonManager.CheckRoomId(roomId);
-
-            if (exist)
+            screenTransition.EnterTransition().OnComplete(() =>
             {
-                screenTransition.EnterTransition();
-            }
-            else
-            {
-                return;
-            }
+                photonManager.JoinRoom(roomId);
+            });
         }
     }
 
