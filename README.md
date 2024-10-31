@@ -1,5 +1,10 @@
 # MotetAI
 
+[![Github issues](https://img.shields.io/github/issues/AoichiShisho/MotetAI)](https://github.com/AoichiShisho/MotetAI/issues)
+[![Top language](https://img.shields.io/github/languages/top/AoichiShisho/MotetAI)](https://github.com/AoichiShisho/MotetAI/)
+[![Release](https://img.shields.io/github/v/release/AoichiShisho/MotetAI)]()
+[![Github license](https://img.shields.io/github/license/AoichiShisho/MotetAI)](https://github.com/AoichiShisho/MotetAI/)
+
 ## 📋 概要
 
 ```
